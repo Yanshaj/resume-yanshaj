@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yanshaj — Portfolio</title>
+    <meta name="description" content="Resume portfolio of Yanshaj. Details of technical competencies, projects, education, and achievements.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS Link -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="apple-theme">
+
+    <!-- ================= TOP frosted NAVIGATION ================= -->
+    <header class="apple-nav-wrapper">
+        <div class="apple-nav">
+            <div class="nav-brand">
+                <a href="#" class="tab-trigger" data-target="summary">Yanshaj</a>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#summary" class="nav-link tab-trigger active" data-target="summary">Summary</a>
+                <a href="#competencies" class="nav-link tab-trigger" data-target="competencies">Competencies</a>
+                <a href="#projects" class="nav-link tab-trigger" data-target="projects">Projects</a>
+                <a href="#education" class="nav-link tab-trigger" data-target="education">Education</a>
+                <a href="#achievements" class="nav-link tab-trigger" data-target="achievements">Achievements</a>
+                <a href="#contact" class="nav-link tab-trigger" data-target="contact">Contact</a>
+            </nav>
+
+            <div class="nav-cta">
+                <a href="#contact" class="btn-primary tab-trigger" data-target="contact">Connect</a>
+            </div>
+
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Sport Mode" title="Toggle Ferrari Sport Mode">
+                <i data-lucide="zap"></i>
+            </button>
+
+            <!-- Mobile Nav Toggle -->
+            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                <span class="menu-bar"></span>
+                <span class="menu-bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <nav class="mobile-nav-links">
+            <a href="#summary" class="mobile-nav-link tab-trigger" data-target="summary">Summary</a>
+            <a href="#competencies" class="mobile-nav-link tab-trigger" data-target="competencies">Competencies</a>
+            <a href="#projects" class="mobile-nav-link tab-trigger" data-target="projects">Projects</a>
+            <a href="#education" class="mobile-nav-link tab-trigger" data-target="education">Education</a>
+            <a href="#achievements" class="mobile-nav-link tab-trigger" data-target="achievements">Achievements</a>
+            <a href="#contact" class="mobile-nav-link tab-trigger" data-target="contact">Contact</a>
+            <a href="#contact" class="btn-primary mobile-cta tab-trigger" data-target="contact">Connect</a>
+        </nav>
+    </div>
+
+    <!-- ================= MAIN CONTAINER ================= -->
+    <main class="main-content">
+        <div class="content-frame">
+
+            <!-- TAB 1: SUMMARY -->
+            <div class="tab-panel active" id="panel-summary">
+                <span class="section-tag">Overview</span>
+                <h1 class="panel-title">Yanshaj</h1>
+                <p class="panel-subtitle">Yamunanagar, Haryana | 135133 | 9518649692</p>
+                
+                <div class="window-section-divider"></div>
+                
+                <h2>PROFESSIONAL SUMMARY</h2>
+                <p class="large-summary-text">
+                    I'm a Computer Science BTech student with strong Interest is a learning and a team-oriented mindset. I enjoy working with others, solving problems, and using technology to create smart and effective solutions.
+                </p>
+            </div>
+
+            <!-- TAB 2: COMPETENCIES -->
+            <div class="tab-panel" id="panel-competencies">
+                <span class="section-tag">Skills</span>
+                <h1 class="panel-title">TECHNICAL COMPETENCIES</h1>
+                
+                <div class="bento-grid">
+                    <!-- Languages -->
+                    <div class="bento-item bento-large col-span-2">
+                        <div class="bento-content">
+                            <span class="bento-tag">Technical Competencies</span>
+                            <h3>Languages</h3>
+                            <div class="skills-capsule-list" style="margin-top: 15px;">
+                                <span class="skill-capsule">C</span>
+                                <span class="skill-capsule">C++</span>
+                                <span class="skill-capsule">HTML</span>
+                                <span class="skill-capsule">CSS</span>
+                                <span class="skill-capsule">JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OS Platforms -->
+                    <div class="bento-item bento-medium">
+                        <div class="bento-content">
+                            <div class="bento-icon"><i data-lucide="monitor"></i></div>
+                            <span class="bento-tag">Technical Competencies</span>
+                            <h3>OS</h3>
+                            <p style="font-size: 1.1rem; font-weight: 600; margin-top: 8px;">Windows | macOS</p>
+                        </div>
+                    </div>
+
+                    <!-- DSA -->
+                    <div class="bento-item bento-medium">
+                        <div class="bento-content">
+                            <div class="bento-icon"><i data-lucide="binary"></i></div>
+                            <span class="bento-tag">Technical Competencies</span>
+                            <h3>Data structure and algorithm</h3>
+                            <p>Well knowledge of DSA concepts and algorithms in C, C++</p>
+                        </div>
+                    </div>
+
+                    <!-- Other Interests & Interpersonal Skills -->
+                    <div class="bento-item bento-large col-span-2">
+                        <div class="bento-content">
+                            <span class="bento-tag">Technical Competencies</span>
+                            <h3>Other Interests</h3>
+                            <p style="margin-bottom: 20px;">Algorithm problem-solving, Technology for social impact.</p>
+                            
+                            <span class="bento-tag">INTERPERSONAL SKILLS</span>
+                            <div class="skills-capsule-list" style="margin-top: 10px;">
+                                <span class="skill-capsule">Team collaboration</span>
+                                <span class="skill-capsule">Adaptability</span>
+                                <span class="skill-capsule">Active listening</span>
+                                <span class="skill-capsule">Feedback-driven improvement</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interests & Hobbies -->
+                    <div class="bento-item bento-medium">
+                        <div class="bento-content">
+                            <div class="bento-icon"><i data-lucide="smile"></i></div>
+                            <span class="bento-tag">INTERESTS & HOBBIES</span>
+                            <h3>Video editing | Gaming | content creation</h3>
+                        </div>
+                    </div>
+
+                    <!-- Languages Known -->
+                    <div class="bento-item bento-medium">
+                        <div class="bento-content">
+                            <div class="bento-icon"><i data-lucide="languages"></i></div>
+                            <span class="bento-tag">LANGUAGES KNOWN</span>
+                            <h3>English | Hindi</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PROJECTS -->
+            <div class="tab-panel" id="panel-projects">
+                <span class="section-tag">Work</span>
+                <h1 class="panel-title">PROJECTS</h1>
+                
+                <div class="projects-grid">
+                    <!-- Project 1: Madimap -->
+                    <div class="project-card-v2">
+                        <div class="card-details">
+                            <h3 class="card-title">Project 1- Madimap – Specialized Doctor–Patient Connectivity Platform (Project)</h3>
+                            <p class="card-desc">
+                                Designed and conceptualized Madimap, a platform aimed at connecting specialized doctors with patients in remote or spatially separated areas.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Road Safety -->
+                    <div class="project-card-v2">
+                        <div class="card-details">
+                            <h3 class="card-title">Project 2</h3>
+                            <p class="card-desc">
+                                built a real-time road safety platform that tracks road defects like potholes and cracks. The system automatically sends text alerts to repair crews when severe damage is found and displays all issues on a live map dashboard. I also developed a simulator that mimics vehicles reporting road damage, as well as a website for citizens to report potholes using their GPS location and photos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: EDUCATION -->
+            <div class="tab-panel" id="panel-education">
+                <span class="section-tag">Education</span>
+                <h1 class="panel-title">EDUCATION & TRAINING</h1>
+                
+                <div class="timeline-container">
+                    <h2 class="sub-section-title">EDUCATION</h2>
+                    
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <span class="timeline-date">Session: 2023-2027</span>
+                            <h3>Bachelor of Technology in Computer Science Engineering</h3>
+                            <span class="timeline-org">Chandigarh Group of Colleges, Landan</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <span class="timeline-date">Session: 2022-2023</span>
+                            <h3>Intermediate (HBSE)</h3>
+                            <span class="timeline-org">Government Senior Secondary School Alahar</span>
+                        </div>
+                        <p class="timeline-desc">Percentage: 73%</p>
+                    </div>
+
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <span class="timeline-date">Session: 2020-2021</span>
+                            <h3>Matriculation (HBSE)</h3>
+                            <span class="timeline-org">Government Senior Secondary School Alahar</span>
+                        </div>
+                        <p class="timeline-desc">Percentage: 100%</p>
+                    </div>
+
+                    <div class="window-section-divider" style="margin: 40px 0;"></div>
+
+                    <h2 class="sub-section-title">TRAINING</h2>
+
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <span class="timeline-date">Duration: 4 Weeks</span>
+                            <h3>Training 1 -Training at TCIL IT</h3>
+                        </div>
+                        <p class="timeline-desc">Learned: MERN</p>
+                    </div>
+
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <span class="timeline-date">Duration: 10 days</span>
+                            <h3>Training 2- Training at Infosys Springboard</h3>
+                        </div>
+                        <p class="timeline-desc">Learned: Python Basics and beginning.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: ACHIEVEMENTS -->
+            <div class="tab-panel" id="panel-achievements">
+                <span class="section-tag">Recognitions</span>
+                <h1 class="panel-title">ACHIEVEMENTS & CERTIFICATIONS</h1>
+                
+                <div class="achievements-section-block">
+                    <h2>ACADEMIC ACHIEVEMENTS</h2>
+                    <ul class="bullet-list">
+                        <li>Secured a 3rd position in “Eureka! Pitching Competition 2024” by performing own idea presentation in a team.</li>
+                        <li>Google student ambassador of my college, promoting technology awareness among student.</li>
+                    </ul>
+                </div>
+
+                <div class="window-section-divider"></div>
+
+                <div class="achievements-section-block">
+                    <h2>CERTIFICATIONS</h2>
+                    <ul class="bullet-list">
+                        <li>Learned MERN STACK by TCIL in JUN-2025.</li>
+                        <li>Completed the “AI for Beginners” by HP LIFE and HP Foundation in DEC-2025.</li>
+                    </ul>
+                </div>
+
+                <div class="window-section-divider"></div>
+
+                <div class="achievements-section-block">
+                    <h2>EXTRA CURRICULAR & CO-CURRICULAR ACHIEVEMENTS</h2>
+                    <ul class="bullet-list">
+                        <li>Created and managed a YouTube travel vlog channel</li>
+                        <li>Successfully completed a 21-day self-discipline and personal improvement challenge</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TAB 6: CONTACT -->
+            <div class="tab-panel" id="panel-contact">
+                <span class="section-tag">Uplink</span>
+                <h1 class="panel-title">CONTACT & PERSONAL DETAILS</h1>
+                
+                <div class="contact-grid">
+                    <div class="contact-details-col">
+                        <h2>PERSONAL DETAILS</h2>
+                        <ul class="details-list">
+                            <li><strong>Name:</strong> Yanshaj</li>
+                            <li><strong>Mother’s Name:</strong> Siromani</li>
+                            <li><strong>Father’s Name:</strong> Mukesh Kumar</li>
+                            <li><strong>D.O.B:</strong> 02/04/2005</li>
+                        </ul>
+
+                        <div class="window-section-divider"></div>
+
+                        <h2>COORDINATES</h2>
+                        <ul class="channels-list">
+                            <li><i data-lucide="mail"></i> <a href="mailto:2320224.cse.coe@cgc.edu.in">Email: 2320224.cse.coe@cgc.edu.in</a></li>
+                            <li><i data-lucide="linkedin"></i> <a href="https://www.linkedin.com/in/yanshaj-kamboj" target="_blank">linkedin.com/in/yanshaj-kamboj</a></li>
+                            <li><i data-lucide="github"></i> <a href="https://github.com/Yanshaj" target="_blank">github.com/Yanshaj</a></li>
+                            <li><i data-lucide="phone"></i> <span>9518649692</span></li>
+                            <li><i data-lucide="map-pin"></i> <span>Yamunanagar, Haryana | 135133</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="contact-form-col">
+                        <h2>SEND MESSAGE</h2>
+                        <form id="contact-form" class="apple-form">
+                            <div class="form-row">
+                                <div class="form-input-group">
+                                    <label for="user-name">Name</label>
+                                    <input type="text" id="user-name" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-input-group">
+                                    <label for="user-email">Email</label>
+                                    <input type="email" id="user-email" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-input-group">
+                                    <label for="user-message">Message</label>
+                                    <textarea id="user-message" required rows="5"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary btn-full">Send Message</button>
+                        </form>
+                        <div id="form-result" class="form-result-message hidden"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="apple-footer">
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p class="copyright">© Yanshaj. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS Link -->
+    <script src="app.js"></script>
+</body>
+</html>
