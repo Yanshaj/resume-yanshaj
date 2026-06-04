@@ -103,6 +103,16 @@ html {
     font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.5;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 40, 0, 0.015) 0, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(255, 213, 0, 0.015) 0, transparent 50%);
+}
+
+.sport-theme html {
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 40, 0, 0.035) 0, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(255, 213, 0, 0.035) 0, transparent 50%),
+        linear-gradient(135deg, #070708 0%, #0f0f11 100%);
 }
 
 body {
@@ -110,17 +120,13 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: var(--color-bg-secondary);
-    background-image: 
-        radial-gradient(at 0% 0%, rgba(255, 40, 0, 0.015) 0, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(255, 213, 0, 0.015) 0, transparent 50%);
+    background-color: transparent;
+    background-image: none;
 }
 
 .sport-theme body {
-    background-image: 
-        radial-gradient(at 0% 0%, rgba(255, 40, 0, 0.035) 0, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(255, 213, 0, 0.035) 0, transparent 50%),
-        linear-gradient(135deg, #070708 0%, #0f0f11 100%);
+    background-color: transparent;
+    background-image: none;
 }
 
 #tech-canvas {
