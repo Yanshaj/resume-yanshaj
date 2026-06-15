@@ -508,6 +508,60 @@ function initTechCanvas() {
     }
     window.addEventListener('resize', resize);
 
+    // 3D vertices of a stylized geometric cat face centered at (0, 0, 0)
+    const catVertices = [
+        { x: 0,   y: 15,  z: 50 },  // 0: Nose tip
+        { x: 0,   y: -10, z: 40 },  // 1: Mouth center
+        { x: -30, y: -20, z: 20 },  // 2: Left mouth corner
+        { x: 30,  y: -20, z: 20 },  // 3: Right mouth corner
+        { x: -45, y: 35,  z: 35 },  // 4: Left eye inner
+        { x: -75, y: 40,  z: 35 },  // 5: Left eye outer
+        { x: 45,  y: 35,  z: 35 },  // 6: Right eye inner
+        { x: 75,  y: 40,  z: 35 },  // 7: Right eye outer
+        { x: -110,y: 0,   z: 0 },   // 8: Left cheek outer
+        { x: 110, y: 0,   z: 0 },   // 9: Right cheek outer
+        { x: 0,   y: -80, z: 10 },  // 10: Chin
+        { x: -90, y: 70,  z: -20 }, // 11: Left forehead temple
+        { x: 90,  y: 70,  z: -20 }, // 12: Right forehead temple
+        { x: 0,   y: 90,  z: 0 },   // 13: Forehead center top
+        { x: -100,y: 160, z: -30 }, // 14: Left ear tip
+        { x: -40, y: 100, z: -20 }, // 15: Left ear inner base
+        { x: 100, y: 160, z: -30 }, // 16: Right ear tip
+        { x: 40,  y: 100, z: -20 }  // 17: Right ear inner base
+    ];
+
+    // Edges connecting the vertices
+    const catEdges = [
+        // Nose, mouth, cheeks & chin
+        { a: 0, b: 1 }, { a: 1, b: 2 }, { a: 1, b: 3 },
+        { a: 0, b: 4 }, { a: 0, b: 6 },
+        { a: 2, b: 8 }, { a: 3, b: 9 }, { a: 2, b: 10 }, { a: 3, b: 10 },
+        // Left Eye loop
+        { a: 4, b: 5 }, { a: 4, b: 11 }, { a: 5, b: 11 }, { a: 5, b: 8 },
+        // Right Eye loop
+        { a: 6, b: 7 }, { a: 6, b: 12 }, { a: 7, b: 12 }, { a: 7, b: 9 },
+        // Cheeks & Chin perimeter
+        { a: 8, b: 10 }, { a: 9, b: 10 },
+        // Forehead center
+        { a: 13, b: 11 }, { a: 13, b: 12 }, { a: 13, b: 15 }, { a: 13, b: 17 },
+        // Left Ear loop
+        { a: 11, b: 14 }, { a: 14, b: 15 }, { a: 15, b: 11 },
+        // Right Ear loop
+        { a: 12, b: 16 }, { a: 16, b: 17 }, { a: 17, b: 12 },
+        // Head perimeter connector
+        { a: 8, b: 11 }, { a: 9, b: 12 }
+    ];
+
+    let catRotX = 0, catRotY = 0;
+    let catTargetRotX = 0, catTargetRotY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+        const ny = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+        catTargetRotY = nx * 0.5; // Yaw
+        catTargetRotX = -ny * 0.4; // Pitch
+    });
+
     const nodeCount = 28;
     const nodes = [];
     for (let i = 0; i < nodeCount; i++) {
@@ -545,7 +599,8 @@ function initTechCanvas() {
     function draw() {
         ctx.clearRect(0, 0, width, height);
 
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.015)";
+        // Subtle tech grid lines
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.012)";
         ctx.lineWidth = 1;
         const gridSpacing = 80;
         for (let x = 0; x < width; x += gridSpacing) {
@@ -561,6 +616,7 @@ function initTechCanvas() {
             ctx.stroke();
         }
 
+        // Draw Nodes
         nodes.forEach(node => {
             node.x += node.vx;
             node.y += node.vy;
@@ -570,7 +626,7 @@ function initTechCanvas() {
 
             ctx.beginPath();
             ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.12)";
             ctx.fill();
         });
 
@@ -582,7 +638,7 @@ function initTechCanvas() {
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
                 if (dist < 180) {
-                    const alpha = (1 - dist / 180) * 0.08;
+                    const alpha = (1 - dist / 180) * 0.06;
                     ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
                     ctx.beginPath();
                     ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -592,6 +648,98 @@ function initTechCanvas() {
             }
         }
 
+        // 3D CAT WIREFRAME PROJECTION DRAWER
+        catRotY += (catTargetRotY - catRotY) * 0.08;
+        catRotX += (catTargetRotX - catRotX) * 0.08;
+
+        const sizeMultiplier = Math.min(width, height) * 0.0035;
+        const cx = width / 2;
+        const cy = height / 2;
+        const d = 400; // Camera focal depth
+
+        const projected = [];
+        catVertices.forEach(v => {
+            // Rotation X
+            const cosX = Math.cos(catRotX);
+            const sinX = Math.sin(catRotX);
+            const y1 = v.y * cosX - v.z * sinX;
+            const z1 = v.y * sinX + v.z * cosX;
+            
+            // Rotation Y
+            const cosY = Math.cos(catRotY);
+            const sinY = Math.sin(catRotY);
+            const x2 = v.x * cosY + z1 * sinY;
+            const z2 = -v.x * sinY + z1 * cosY;
+
+            // Projection
+            const scale = d / (d + z2);
+
+            projected.push({
+                x: cx + x2 * scale * sizeMultiplier,
+                y: cy - y1 * scale * sizeMultiplier
+            });
+        });
+
+        const isLightsout = document.body.classList.contains('is-lightsout');
+        ctx.lineWidth = isLightsout ? 2.5 : 1.2;
+        ctx.strokeStyle = isLightsout ? 'rgba(48, 184, 255, 0.75)' : 'rgba(255, 255, 255, 0.075)';
+
+        // Draw edges
+        catEdges.forEach(edge => {
+            const p1 = projected[edge.a];
+            const p2 = projected[edge.b];
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+        });
+
+        // Draw Whiskers
+        const cheekL = projected[8];
+        const cheekR = projected[9];
+        const whiskersL = [
+            { x: -70, y: 15 }, { x: -80, y: -5 }, { x: -75, y: -25 }
+        ];
+        const whiskersR = [
+            { x: 70, y: 15 }, { x: 80, y: -5 }, { x: 75, y: -25 }
+        ];
+
+        whiskersL.forEach(w => {
+            const cosY = Math.cos(catRotY);
+            const wx = w.x * cosY;
+            ctx.beginPath();
+            ctx.moveTo(cheekL.x, cheekL.y);
+            ctx.lineTo(cheekL.x + wx * sizeMultiplier, cheekL.y - w.y * sizeMultiplier);
+            ctx.stroke();
+        });
+
+        whiskersR.forEach(w => {
+            const cosY = Math.cos(catRotY);
+            const wx = w.x * cosY;
+            ctx.beginPath();
+            ctx.moveTo(cheekR.x, cheekR.y);
+            ctx.lineTo(cheekR.x + wx * sizeMultiplier, cheekR.y - w.y * sizeMultiplier);
+            ctx.stroke();
+        });
+
+        // Glowing eyes in Lightsout mode
+        if (isLightsout) {
+            ctx.fillStyle = 'rgba(255, 213, 0, 0.85)';
+            const eyeL = {
+                x: (projected[4].x + projected[5].x) / 2,
+                y: (projected[4].y + projected[5].y) / 2
+            };
+            const eyeR = {
+                x: (projected[6].x + projected[7].x) / 2,
+                y: (projected[6].y + projected[7].y) / 2
+            };
+            ctx.beginPath();
+            ctx.arc(eyeL.x, eyeL.y, 4 * sizeMultiplier, 0, Math.PI * 2);
+            ctx.arc(eyeR.x, eyeR.y, 4 * sizeMultiplier, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Draw physics dust gravity particles
         if (physicsDustActive && dustPoints.length > 0) {
             dustPoints.forEach((dust, dIndex) => {
                 dust.x += dust.vx;
