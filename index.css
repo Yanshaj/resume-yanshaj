@@ -607,52 +607,104 @@ a {
     color: var(--about-fg-dim);
 }
 
-.scrollHint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
-.scrollHint span {
-    font-family: var(--font-space-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--about-fg-dim);
-}
-.scrollHint__line {
-    width: 1px;
-    height: 3.5rem;
-    background: rgba(255,255,255,0.1);
-    position: relative;
-    overflow: hidden;
-}
-.scrollHint__line .bar {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* About Page Sub-navigation Controls */
+.about-subnav-wrap {
+    border-top: 1px solid var(--about-border);
+    border-bottom: 1px solid var(--about-border);
+    background: rgba(8, 8, 8, 0.4);
+    backdrop-filter: blur(2px);
     width: 100%;
-    height: 100%;
-    background: var(--col-blue);
-    animation: scroll-down-anim 1.8s ease-in-out infinite;
 }
-@keyframes scroll-down-anim {
-    0% { transform: translateY(-100%); }
-    80%, 100% { transform: translateY(100%); }
+.about-subnav {
+    display: flex;
+    justify-content: flex-start;
+    gap: 4rem;
+    padding: 1rem 0;
+}
+@media screen and (max-width: 768px) {
+    .about-subnav {
+        gap: 1.5rem;
+    }
+}
+.about-subnav__btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-space-mono);
+    color: var(--col-white);
+    opacity: 0.4;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+.about-subnav__btn:hover,
+.about-subnav__btn.active {
+    opacity: 1;
+    color: var(--col-blue);
+}
+.about-subnav__btn::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--col-blue);
+    transition: width 0.3s ease, left 0.3s ease;
+}
+.about-subnav__btn:hover::after,
+.about-subnav__btn.active::after {
+    width: 100%;
+    left: 0;
+}
+.about-subnav__btn .num {
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+.about-subnav__btn .lbl {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
 }
 
-.contentSection {
-    padding: 8rem 0;
-    border-top: 1px solid var(--about-border);
+/* About Tab Panel viewport container */
+.about-content-viewport {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+    overflow: hidden;
+    padding: 4rem 0;
 }
-.contentSection--first {
-    border: none;
-    padding: 0;
-    height: 10vh;
+@media screen and (max-width: 768px) {
+    .about-content-viewport {
+        min-height: 700px;
+    }
+}
+
+.about-subpanel {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 4rem;
+    transform: translate3d(50px, 0, 0);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.about-subpanel.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    top: 0;
+    transform: translate3d(0, 0, 0);
+}
+/* Transitions for sliding reverse */
+.about-subpanel.slide-left {
+    transform: translate3d(-50px, 0, 0);
 }
 
 .sectionLabel {

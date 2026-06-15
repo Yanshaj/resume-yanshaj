@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Initialize About Copy button & Scroll Reveal triggers
     initAboutPolish();
+
+    // 8. Initialize About page animated sub-tabs
+    initAboutTabs();
 });
 
 /* ==========================================================================
@@ -591,5 +594,45 @@ function handleScrollReveal() {
         if (rect.top < triggerHeight) {
             el.classList.add('visible');
         }
+    });
+}
+
+/* ==========================================================================
+   8. ABOUT SUB-TAB SWAPPER
+   ========================================================================== */
+function initAboutTabs() {
+    const subnavBtns = document.querySelectorAll('.about-subnav__btn');
+    const subpanels = document.querySelectorAll('.about-subpanel');
+    
+    if (subnavBtns.length === 0) return;
+
+    let currentActiveIdx = 0;
+
+    subnavBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetIdx = parseInt(btn.getAttribute('data-subtab'), 10);
+            if (targetIdx === currentActiveIdx) return;
+
+            // Remove active classes
+            subnavBtns.forEach(b => b.classList.remove('active'));
+            subpanels.forEach(p => {
+                p.classList.remove('active');
+                p.classList.remove('slide-left');
+            });
+
+            // If navigating backward, apply class to slide in from left instead of right
+            if (targetIdx < currentActiveIdx) {
+                subpanels[targetIdx].classList.add('slide-left');
+            }
+
+            // Set active states
+            btn.classList.add('active');
+            subpanels[targetIdx].classList.add('active');
+            
+            // Force redraw/reflow for transition
+            void subpanels[targetIdx].offsetWidth;
+
+            currentActiveIdx = targetIdx;
+        });
     });
 }
