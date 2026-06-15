@@ -596,6 +596,11 @@ function initTechCanvas() {
         });
     }
 
+    // Eye Blink variables
+    let blinkValue = 1;
+    let nextBlinkTime = Date.now() + Math.random() * 4000 + 2000;
+    let blinkEndTime = 0;
+
     function draw() {
         ctx.clearRect(0, 0, width, height);
 
@@ -648,41 +653,78 @@ function initTechCanvas() {
             }
         }
 
-        // 3D CAT WIREFRAME PROJECTION DRAWER
-        catRotY += (catTargetRotY - catRotY) * 0.08;
-        catRotX += (catTargetRotX - catRotX) * 0.08;
+        // 1. ANIMATION METRICS (floating & breathing & blinking)
+        const time = performance.now() * 0.0015;
+        const floatY = Math.sin(time) * 15; // Vertical floating offset
+        const scalePulse = 1.0 + Math.cos(time * 0.8) * 0.04; // Breathing scale pulse
+        
+        // Idle head swaying drift (active when mouse is still)
+        const idleX = Math.sin(time * 0.5) * 0.08;
+        const idleY = Math.cos(time * 0.4) * 0.08;
+        catRotY += (catTargetRotY + idleY - catRotY) * 0.08;
+        catRotX += (catTargetRotX + idleX - catRotX) * 0.08;
+
+        // Blinking system
+        if (Date.now() > nextBlinkTime) {
+            blinkValue = 0.05; // blink flat eyes
+            blinkEndTime = Date.now() + 150;
+            nextBlinkTime = Date.now() + Math.random() * 5000 + 3000;
+        }
+        if (blinkEndTime > 0 && Date.now() > blinkEndTime) {
+            blinkValue = 1;
+            blinkEndTime = 0;
+        }
 
         const sizeMultiplier = Math.min(width, height) * 0.0035;
         const cx = width / 2;
         const cy = height / 2;
-        const d = 400; // Camera focal depth
+        const d = 400; // Focal camera depth
 
+        // Rotate & Project vertices
         const projected = [];
-        catVertices.forEach(v => {
+        catVertices.forEach((v, index) => {
+            let rawY = v.y;
+            // Compress eye vertices on blink (indices 4, 5, 6, 7)
+            if (index >= 4 && index <= 7) {
+                rawY = 37 + (v.y - 37) * blinkValue;
+            }
+
+            // Apply breathe scale
+            const xVal = v.x * scalePulse;
+            const yVal = rawY * scalePulse;
+            const zVal = v.z * scalePulse;
+
             // Rotation X
             const cosX = Math.cos(catRotX);
             const sinX = Math.sin(catRotX);
-            const y1 = v.y * cosX - v.z * sinX;
-            const z1 = v.y * sinX + v.z * cosX;
+            const y1 = yVal * cosX - zVal * sinX;
+            const z1 = yVal * sinX + zVal * cosX;
             
             // Rotation Y
             const cosY = Math.cos(catRotY);
             const sinY = Math.sin(catRotY);
-            const x2 = v.x * cosY + z1 * sinY;
-            const z2 = -v.x * sinY + z1 * cosY;
+            const x2 = xVal * cosY + z1 * sinY;
+            const z2 = -xVal * sinY + z1 * cosY;
 
-            // Projection
+            // Perspective Projection
             const scale = d / (d + z2);
 
             projected.push({
                 x: cx + x2 * scale * sizeMultiplier,
-                y: cy - y1 * scale * sizeMultiplier
+                y: cy - (y1 + floatY) * scale * sizeMultiplier // Float offset translation
             });
         });
 
+        // 2. STYLING PARAMETERS (Highly visible White neon style)
         const isLightsout = document.body.classList.contains('is-lightsout');
-        ctx.lineWidth = isLightsout ? 2.5 : 1.2;
-        ctx.strokeStyle = isLightsout ? 'rgba(48, 184, 255, 0.75)' : 'rgba(255, 255, 255, 0.075)';
+        
+        ctx.save();
+        ctx.lineWidth = isLightsout ? 3.0 : 1.8;
+        ctx.strokeStyle = isLightsout ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.38)';
+        
+        // Add neon/glow blur shadows
+        ctx.shadowBlur = isLightsout ? 14 : 6;
+        ctx.shadowColor = isLightsout ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.15)';
 
         // Draw edges
         catEdges.forEach(edge => {
@@ -721,23 +763,23 @@ function initTechCanvas() {
             ctx.lineTo(cheekR.x + wx * sizeMultiplier, cheekR.y - w.y * sizeMultiplier);
             ctx.stroke();
         });
+        
+        ctx.restore(); // Clear shadow blur settings for outer elements
 
-        // Glowing eyes in Lightsout mode
-        if (isLightsout) {
-            ctx.fillStyle = 'rgba(255, 213, 0, 0.85)';
-            const eyeL = {
-                x: (projected[4].x + projected[5].x) / 2,
-                y: (projected[4].y + projected[5].y) / 2
-            };
-            const eyeR = {
-                x: (projected[6].x + projected[7].x) / 2,
-                y: (projected[6].y + projected[7].y) / 2
-            };
-            ctx.beginPath();
-            ctx.arc(eyeL.x, eyeL.y, 4 * sizeMultiplier, 0, Math.PI * 2);
-            ctx.arc(eyeR.x, eyeR.y, 4 * sizeMultiplier, 0, Math.PI * 2);
-            ctx.fill();
-        }
+        // Glowing eyes details (yellow in lightsout mode, soft white in normal mode!)
+        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.5)';
+        const eyeL = {
+            x: (projected[4].x + projected[5].x) / 2,
+            y: (projected[4].y + projected[5].y) / 2
+        };
+        const eyeR = {
+            x: (projected[6].x + projected[7].x) / 2,
+            y: (projected[6].y + projected[7].y) / 2
+        };
+        ctx.beginPath();
+        ctx.arc(eyeL.x, eyeL.y, 4 * sizeMultiplier * blinkValue, 0, Math.PI * 2);
+        ctx.arc(eyeR.x, eyeR.y, 4 * sizeMultiplier * blinkValue, 0, Math.PI * 2);
+        ctx.fill();
 
         // Draw physics dust gravity particles
         if (physicsDustActive && dustPoints.length > 0) {
