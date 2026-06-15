@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Initialize Timezone Clock
     initClock();
 
-    // 3. Initialize Client Router
+    // 3. Initialize Client Router (4 Tabs: about, skills, projects, contact)
     initRouter();
 
-    // 4. Initialize Project Hover Thumbnails & Detail Modal
-    initProjectHoverAndModal();
+    // 4. Initialize Infinite Loop Scroll & Project Hover Modals
+    initInfiniteProjectsScroll();
 
     // 5. Initialize Lightsout Signal Mode & Reaction Mini-game
     initLightsoutGame();
@@ -24,9 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Initialize About Copy button & Scroll Reveal triggers
     initAboutPolish();
-
-    // 8. Initialize About page animated sub-tabs
-    initAboutTabs();
 });
 
 /* ==========================================================================
@@ -54,7 +51,6 @@ function initIntroLoader() {
             }, 600);
         }
         
-        // Pad count to 3 digits (e.g. 005, 042, 100)
         counterNum.textContent = String(count).padStart(3, '0');
     }, 30);
 }
@@ -68,9 +64,6 @@ function initClock() {
 
     function updateTime() {
         const now = new Date();
-        
-        // Yamunanagar Time (India Standard Time - UTC +5:30)
-        // Since we are running in the user's local context or standard clock:
         const options = {
             timeZone: 'Asia/Kolkata',
             hour: '2-digit',
@@ -78,7 +71,6 @@ function initClock() {
             second: '2-digit',
             hour12: true
         };
-        
         const formatter = new Intl.DateTimeFormat('en-US', options);
         timeEl.textContent = formatter.format(now);
     }
@@ -88,7 +80,7 @@ function initClock() {
 }
 
 /* ==========================================================================
-   3. CLIENT ROUTER
+   3. CLIENT ROUTER (4 TAB CHANNELS)
    ========================================================================== */
 function initRouter() {
     const links = document.querySelectorAll('[data-route]');
@@ -96,9 +88,9 @@ function initRouter() {
     const routeIndicator = document.getElementById('route-indicator-top');
 
     function navigate(route) {
-        if (!route) route = 'projects';
+        // Fallback default is 'about' as first section
+        if (!route) route = 'about';
         
-        // Update body data attribute
         document.body.setAttribute('data-page', route);
 
         // Sync header links active state
@@ -110,35 +102,30 @@ function initRouter() {
             }
         });
 
-        // Toggle panel visibility with a smooth transition
+        // Toggle panel visibility
         panels.forEach(panel => {
             panel.classList.remove('active');
             panel.classList.remove('reveal-active');
             if (panel.id === `panel-${route}`) {
                 panel.classList.add('active');
-                // Trigger reflow to restart entrance animations
                 void panel.offsetWidth; 
                 panel.classList.add('reveal-active');
             }
         });
 
-        // Update top-right indicator text
+        // Update indicator text
         if (routeIndicator) {
             routeIndicator.textContent = route.toUpperCase();
         }
 
-        // Close overlay if open
+        // Close project overlay if open
         const overlay = document.getElementById('project-detail-overlay');
         if (overlay) overlay.classList.add('hidden');
 
-        // Scroll to top
         window.scrollTo({ top: 0, behavior: 'instant' });
-
-        // Trigger scroll reveals manually
         handleScrollReveal();
     }
 
-    // Bind route link click events
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -147,19 +134,18 @@ function initRouter() {
         });
     });
 
-    // Listen to hash changes for robust routing support
     window.addEventListener('hashchange', () => {
-        const hash = window.location.hash.substring(2); // Remove '#/'
+        const hash = window.location.hash.substring(2);
         navigate(hash);
     });
 
     // Initial load route check
     const initialHash = window.location.hash.substring(2);
-    navigate(initialHash || 'projects');
+    navigate(initialHash || 'about');
 }
 
 /* ==========================================================================
-   4. HOVER THUMBNAILS & PROJECT DETAIL MODAL
+   4. INFINITE LOOP SCROLLING PROJECTS LIST & EVENT BINDINGS
    ========================================================================== */
 const projectData = [
     {
@@ -204,53 +190,147 @@ const projectData = [
     }
 ];
 
-function initProjectHoverAndModal() {
-    const links = document.querySelectorAll('.project-link');
-    const thumbnailWrap = document.querySelector('.p-thumbnail');
-    const thumbItems = document.querySelectorAll('.p-thumbnail li');
-    const menuWrap = document.querySelector('.p-menu-wrap');
+function initInfiniteProjectsScroll() {
+    const menu = document.getElementById('infinite-menu');
+    const wrap = document.querySelector('.p-menu-wrap');
+    const thumbnailWrap = document.getElementById('infinite-thumbs');
+    const thumbItems = document.querySelectorAll('#infinite-thumbs li');
 
-    const overlay = document.getElementById('project-detail-overlay');
-    const closeBtn = document.querySelector('.overlay-close-btn');
+    if (!menu || !wrap || !thumbnailWrap) return;
 
-    if (!thumbnailWrap || links.length === 0) return;
+    // 1. Clone Menu Items to create 3 sets for infinite wrapping
+    const originalItems = Array.from(menu.children);
+    menu.innerHTML = '';
+    
+    // Create three sets (total 15 elements: Set 0, Set 1, Set 2)
+    for (let s = 0; s < 3; s++) {
+        originalItems.forEach((item, index) => {
+            const clone = item.cloneNode(true);
+            clone.querySelector('.project-link').setAttribute('data-index', index);
+            menu.appendChild(clone);
+        });
+    }
 
-    // --- Hover Follow-Cursor Logic ---
+    // Bind hover and click events to all cloned links
+    const newLinks = menu.querySelectorAll('.project-link');
+    bindProjectEvents(newLinks, thumbnailWrap, thumbItems);
+
+    // 2. Infinite Scroll Physics
+    let targetY = 0;
+    let currentY = 0;
+    const lerpFactor = 0.08;
+    
+    let singleSetHeight = 0;
+    let isDragging = false;
+    let startTouchY = 0;
+    let startTargetY = 0;
+
+    function updateMetrics() {
+        const childList = Array.from(menu.children);
+        if (childList.length === 0) return;
+        
+        singleSetHeight = 0;
+        // Height of one set of 5 items
+        for (let i = 0; i < originalItems.length; i++) {
+            singleSetHeight += childList[i].offsetHeight;
+        }
+    }
+
+    // Set initial heights
+    updateMetrics();
+    window.addEventListener('resize', updateMetrics);
+    
+    // Position middle set initially
+    targetY = -singleSetHeight;
+    currentY = -singleSetHeight;
+
+    // Capture Wheel scroll
+    wrap.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        targetY -= e.deltaY * 0.7;
+    }, { passive: false });
+
+    // Touch support for mobile dragging
+    wrap.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startTouchY = e.touches[0].clientY;
+        startTargetY = targetY;
+    });
+
+    wrap.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const delta = e.touches[0].clientY - startTouchY;
+        targetY = startTargetY + delta * 1.5;
+    }, { passive: false });
+
+    wrap.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    // Tick Animation Loop for translation and loop wrapping
+    function scrollTick() {
+        if (singleSetHeight === 0) {
+            updateMetrics();
+            requestAnimationFrame(scrollTick);
+            return;
+        }
+
+        // Apply Lerp
+        currentY += (targetY - currentY) * lerpFactor;
+
+        // Loop wrapping bounds check
+        // The middle set is active in the range [-2 * singleSetHeight, -1 * singleSetHeight]
+        if (currentY > -singleSetHeight) {
+            currentY -= singleSetHeight;
+            targetY -= singleSetHeight;
+        } else if (currentY < -2 * singleSetHeight) {
+            currentY += singleSetHeight;
+            targetY += singleSetHeight;
+        }
+
+        // Translate the list container
+        menu.style.transform = `translate3d(0, ${currentY}px, 0)`;
+
+        requestAnimationFrame(scrollTick);
+    }
+    scrollTick();
+
+    // 3. Hover Floating Thumbnail Follow Cursor Logic
     let mouseX = 0, mouseY = 0;
     let thumbX = 0, thumbY = 0;
-    const lerpFactor = 0.1; // Smooth movement interpolation
 
-    menuWrap.addEventListener('mousemove', (e) => {
-        // Calculate relative coordinates inside menu container
-        const rect = menuWrap.getBoundingClientRect();
+    wrap.addEventListener('mousemove', (e) => {
+        const rect = wrap.getBoundingClientRect();
         mouseX = e.clientX - rect.left - (thumbnailWrap.offsetWidth / 2);
         mouseY = e.clientY - rect.top - (thumbnailWrap.offsetHeight / 2);
     });
 
-    // Dynamic position updater loop
-    function updateThumbnailPosition() {
-        // Lerp position values
-        thumbX += (mouseX - thumbX) * lerpFactor;
-        thumbY += (mouseY - thumbY) * lerpFactor;
+    function updateThumbnailTick() {
+        thumbX += (mouseX - thumbX) * 0.1;
+        thumbY += (mouseY - thumbY) * 0.1;
         
         thumbnailWrap.style.transform = `translate3d(${thumbX}px, ${thumbY}px, 0)`;
-        requestAnimationFrame(updateThumbnailPosition);
+        requestAnimationFrame(updateThumbnailTick);
     }
-    updateThumbnailPosition();
+    updateThumbnailTick();
+}
 
-    // Trigger hover visibility
-    links.forEach((link) => {
+function bindProjectEvents(links, thumbnailWrap, thumbItems) {
+    const overlay = document.getElementById('project-detail-overlay');
+    const closeBtn = document.querySelector('.overlay-close-btn');
+
+    links.forEach(link => {
         link.addEventListener('mouseenter', () => {
-            const index = link.getAttribute('data-index');
+            const index = parseInt(link.getAttribute('data-index'), 10);
             
             // Clear other active thumbs
             thumbItems.forEach(item => item.classList.remove('active'));
             
-            // Set active thumb item
+            // Activate target thumb visual
             if (thumbItems[index]) {
                 thumbItems[index].classList.add('active');
             }
-            
             thumbnailWrap.classList.add('active');
         });
 
@@ -258,38 +338,31 @@ function initProjectHoverAndModal() {
             thumbnailWrap.classList.remove('active');
         });
 
-        // Click handler to open Details Overlay Modal
+        // Click opens detailed overlay
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const index = parseInt(link.getAttribute('data-index'), 10);
-            openProjectDetails(index);
+            const data = projectData[index];
+            if (!data || !overlay) return;
+
+            document.getElementById('overlay-proj-index').textContent = `0${index + 1} / FEATURED PROJECT`;
+            document.getElementById('overlay-proj-title').textContent = data.title;
+            document.getElementById('overlay-proj-desc').textContent = data.desc;
+            document.getElementById('overlay-proj-role').textContent = data.role;
+            document.getElementById('overlay-proj-stack').textContent = data.stack;
+            document.getElementById('overlay-proj-type').textContent = data.type;
+            document.getElementById('overlay-proj-img').src = data.image;
+
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         });
     });
-
-    // Detail Modal Actions
-    function openProjectDetails(index) {
-        const data = projectData[index];
-        if (!data || !overlay) return;
-
-        document.getElementById('overlay-proj-index').textContent = `0${index + 1} / FEATURED PROJECT`;
-        document.getElementById('overlay-proj-title').textContent = data.title;
-        document.getElementById('overlay-proj-desc').textContent = data.desc;
-        document.getElementById('overlay-proj-role').textContent = data.role;
-        document.getElementById('overlay-proj-stack').textContent = data.stack;
-        document.getElementById('overlay-proj-type').textContent = data.type;
-        document.getElementById('overlay-proj-img').src = data.image;
-
-        overlay.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Lock background scroll
-    }
 
     if (closeBtn && overlay) {
         closeBtn.addEventListener('click', () => {
             overlay.classList.add('hidden');
             document.body.style.overflow = '';
         });
-        
-        // Close on background overlay click
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 overlay.classList.add('hidden');
@@ -303,7 +376,7 @@ function initProjectHoverAndModal() {
    5. LIGHTSOUT SIGNAL MODE & REACTION SPEED GAME
    ========================================================================== */
 let lightsoutActive = false;
-let reactionState = 'idle'; // idle, waiting, flash, result
+let reactionState = 'idle';
 let reactionTimeout = null;
 let startTime = 0;
 
@@ -318,7 +391,6 @@ function initLightsoutGame() {
 
     if (!switcher) return;
 
-    // Trigger state changes
     function toggleLightsout(forceState) {
         lightsoutActive = typeof forceState === 'boolean' ? forceState : !lightsoutActive;
         
@@ -335,14 +407,11 @@ function initLightsoutGame() {
         }
     }
 
-    // Switch click
     switcher.addEventListener('click', () => toggleLightsout());
 
-    // Physical Shift key code binder
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Shift') {
             e.preventDefault();
-            // If already playing, register action
             if (lightsoutActive) {
                 handleReactionTrigger();
             } else {
@@ -351,21 +420,18 @@ function initLightsoutGame() {
         }
     });
 
-    // Exit Game button
     if (exitBtn) {
         exitBtn.addEventListener('click', () => {
             toggleLightsout(false);
         });
     }
 
-    // Engage game from Playground page option card
     if (triggerBtn) {
         triggerBtn.addEventListener('click', () => {
             toggleLightsout(true);
         });
     }
 
-    // Clicking the screen in game triggers action
     hud.addEventListener('mousedown', (e) => {
         if (e.target !== exitBtn && e.target !== reactionTimeout) {
             handleReactionTrigger();
@@ -379,7 +445,7 @@ function initLightsoutGame() {
         labelText.textContent = "STANDBY";
         hud.style.backgroundColor = "#000000";
 
-        const delay = Math.random() * 3000 + 2000; // 2 to 5 seconds
+        const delay = Math.random() * 3000 + 2000;
         reactionTimeout = setTimeout(() => {
             reactionState = 'flash';
             hud.style.backgroundColor = "var(--col-blue)";
@@ -390,17 +456,14 @@ function initLightsoutGame() {
 
     function handleReactionTrigger() {
         if (reactionState === 'waiting') {
-            // Early hit fail
             clearTimeout(reactionTimeout);
             reactionState = 'result';
             hud.style.backgroundColor = "#cc2000";
             promptText.textContent = "TOO EARLY!";
             timeText.textContent = "FAIL";
             labelText.textContent = "RE-ENGAGE IN 3 SECONDS";
-            
             setTimeout(startReactionGame, 3000);
         } else if (reactionState === 'flash') {
-            // Success hit
             const endTime = performance.now();
             const elapsed = Math.round(endTime - startTime);
             reactionState = 'result';
@@ -445,7 +508,6 @@ function initTechCanvas() {
     }
     window.addEventListener('resize', resize);
 
-    // Setup base lines and packets
     const nodeCount = 28;
     const nodes = [];
     for (let i = 0; i < nodeCount; i++) {
@@ -458,13 +520,11 @@ function initTechCanvas() {
         });
     }
 
-    // Physics Dust Array trigger
     const dustTriggerBtn = document.getElementById('btn-trigger-physics');
     if (dustTriggerBtn) {
         dustTriggerBtn.addEventListener('click', () => {
             physicsDustActive = true;
             dustPoints = [];
-            // Spawn 150 explosion particles
             for (let i = 0; i < 120; i++) {
                 dustPoints.push({
                     x: width / 2 + (Math.random() - 0.5) * 100,
@@ -485,7 +545,6 @@ function initTechCanvas() {
     function draw() {
         ctx.clearRect(0, 0, width, height);
 
-        // Draw blueprint grid lines
         ctx.strokeStyle = "rgba(255, 255, 255, 0.015)";
         ctx.lineWidth = 1;
         const gridSpacing = 80;
@@ -502,12 +561,10 @@ function initTechCanvas() {
             ctx.stroke();
         }
 
-        // Draw Nodes
         nodes.forEach(node => {
             node.x += node.vx;
             node.y += node.vy;
 
-            // Boundaries
             if (node.x < 0 || node.x > width) node.vx *= -1;
             if (node.y < 0 || node.y > height) node.vy *= -1;
 
@@ -517,7 +574,6 @@ function initTechCanvas() {
             ctx.fill();
         });
 
-        // Draw connecting node links
         ctx.lineWidth = 0.5;
         for (let i = 0; i < nodes.length; i++) {
             for (let j = i + 1; j < nodes.length; j++) {
@@ -536,12 +592,11 @@ function initTechCanvas() {
             }
         }
 
-        // Draw physics dust gravity particles on request
         if (physicsDustActive && dustPoints.length > 0) {
             dustPoints.forEach((dust, dIndex) => {
                 dust.x += dust.vx;
                 dust.y += dust.vy;
-                dust.vy += 0.05; // Gravity pull
+                dust.vy += 0.05;
                 dust.life -= dust.decay;
 
                 if (dust.life <= 0) {
@@ -565,7 +620,6 @@ function initTechCanvas() {
    7. ABOUT COPY BUTTON & SCROLL REVEAL TRIGGERS
    ========================================================================== */
 function initAboutPolish() {
-    // Copy email address to clipboard
     const copyBtn = document.querySelector('.js-footer-copy-btn');
     const toast = document.getElementById('copy-toast');
 
@@ -581,7 +635,6 @@ function initAboutPolish() {
         });
     }
 
-    // Scroll listener to activate reveal effects
     window.addEventListener('scroll', handleScrollReveal);
 }
 
@@ -594,45 +647,5 @@ function handleScrollReveal() {
         if (rect.top < triggerHeight) {
             el.classList.add('visible');
         }
-    });
-}
-
-/* ==========================================================================
-   8. ABOUT SUB-TAB SWAPPER
-   ========================================================================== */
-function initAboutTabs() {
-    const subnavBtns = document.querySelectorAll('.about-subnav__btn');
-    const subpanels = document.querySelectorAll('.about-subpanel');
-    
-    if (subnavBtns.length === 0) return;
-
-    let currentActiveIdx = 0;
-
-    subnavBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetIdx = parseInt(btn.getAttribute('data-subtab'), 10);
-            if (targetIdx === currentActiveIdx) return;
-
-            // Remove active classes
-            subnavBtns.forEach(b => b.classList.remove('active'));
-            subpanels.forEach(p => {
-                p.classList.remove('active');
-                p.classList.remove('slide-left');
-            });
-
-            // If navigating backward, apply class to slide in from left instead of right
-            if (targetIdx < currentActiveIdx) {
-                subpanels[targetIdx].classList.add('slide-left');
-            }
-
-            // Set active states
-            btn.classList.add('active');
-            subpanels[targetIdx].classList.add('active');
-            
-            // Force redraw/reflow for transition
-            void subpanels[targetIdx].offsetWidth;
-
-            currentActiveIdx = targetIdx;
-        });
     });
 }

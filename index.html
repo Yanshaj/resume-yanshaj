@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECTS — Yanshaj — Code, Interactive Design</title>
+    <title>ABOUT — Yanshaj — Code, Interactive Design</title>
     <meta name="description" content="Portfolio of Yanshaj. Computer Science BTech student, developer, and interactive designer.">
     
     <!-- Google Fonts -->
@@ -14,7 +14,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
 </head>
-<body data-page="projects">
+<body data-page="about">
     <!-- WebGL/2D Canvas for Interactive Particles background -->
     <div id="webgl">
         <canvas id="tech-canvas"></canvas>
@@ -25,15 +25,15 @@
         <div class="l-header__inner">
             <nav class="l-header__nav l-header__nav--left">
                 <div class="item">
-                    <a href="#/projects" class="item__link active" data-route="projects">PROJECTS</a>
+                    <a href="#/about" class="item__link active" data-route="about">ABOUT</a>
                 </div>
                 <div class="item">
-                    <a href="#/about" class="item__link" data-route="about">ABOUT</a>
+                    <a href="#/skills" class="item__link" data-route="skills">SKILLS & HOBBIES</a>
                 </div>
             </nav>
 
             <div class="l-header__logo">
-                <a href="#/projects" aria-label="Home" data-route="projects" class="logo">
+                <a href="#/about" aria-label="Home" data-route="about" class="logo">
                     <!-- Custom Futuristic Geometric SVG Logo for Yanshaj -->
                     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 10L50 60L80 10" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -45,10 +45,10 @@
 
             <nav class="l-header__nav l-header__nav--right">
                 <div class="item">
-                    <a href="#/playground" class="item__link" data-route="playground">PLAYGROUND</a>
+                    <a href="#/projects" class="item__link" data-route="projects">PROJECTS</a>
                 </div>
                 <div class="item contact-menu">
-                    <button class="item__link contact-btn" type="button" aria-label="Contact">CONTACT</button>
+                    <button class="item__link contact-btn" type="button" aria-label="Contact" data-route="contact">CONTACT</button>
                     <div class="innerLink">
                         <div class="innerlink__item">
                             <a href="https://github.com/Yanshaj" target="_blank">GITHUB</a>
@@ -68,10 +68,10 @@
                 <div class="item">
                     <button class="item__link menu-toggle-btn" type="button" aria-label="Menu">MENU</button>
                     <div class="innerLink innerLink--menu">
-                        <div class="innerlink__item"><a href="#/projects" data-route="projects">PROJECTS</a></div>
                         <div class="innerlink__item"><a href="#/about" data-route="about">ABOUT</a></div>
-                        <div class="innerlink__item"><a href="#/playground" data-route="playground">PLAYGROUND</a></div>
-                        <div class="innerlink__item"><a href="mailto:2320224.cse.coe@cgc.edu.in">CONTACT</a></div>
+                        <div class="innerlink__item"><a href="#/skills" data-route="skills">SKILLS & HOBBIES</a></div>
+                        <div class="innerlink__item"><a href="#/projects" data-route="projects">PROJECTS</a></div>
+                        <div class="innerlink__item"><a href="#/contact" data-route="contact">CONTACT</a></div>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,7 @@
     
     <div class="c-heading">
         <p class="c-heading__text">
-            <span class="c-heading__line" id="route-indicator-top">PROJECTS</span>
+            <span class="c-heading__line" id="route-indicator-top">ABOUT</span>
             <span class="c-heading__line" style="opacity: 0.4;">YANSHAJ</span>
         </p>
     </div>
@@ -115,12 +115,227 @@
     <main class="l-main">
         <div class="l-main__inner">
             
-            <!-- SECTION 1: PROJECTS (Home / Landing) -->
-            <section class="l-projects tab-panel active" id="panel-projects">
+            <!-- SECTION 1: ABOUT (Overview / Education) -->
+            <section class="l-about tab-panel active" id="panel-about">
+                <div class="hero">
+                    <div class="hero__content">
+                        <div>
+                            <span class="hero__tag">Profile</span>
+                            <span class="hero__name-inner">YANSHAJ</span>
+                        </div>
+                        <div class="hero__right">
+                            <span class="hero__years-num">B.TECH</span>
+                            <span class="hero__years-label">COMPUTER SCIENCE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contentSection contentSection--second">
+                    <div class="l-inner">
+                        <div class="sectionLabel">
+                            <div class="aboutGrid__dot"></div>
+                            <span>01 / OVERVIEW</span>
+                        </div>
+                        
+                        <div class="aboutGrid">
+                            <h2 class="aboutGrid__en">
+                                DEVELOPING <strong>TELEMETRY</strong> FOR<br>
+                                SOCIAL <span class="aboutGrid__en-sub">IMPACT & CONNECTIVITY</span>
+                            </h2>
+                            <div class="aboutGrid__jp">
+                                <p class="aboutGrid__jp-line">
+                                    I am a Computer Science BTech student at <strong>Chandigarh Group of Colleges, Landran</strong> (2023-2027) with a passion for building software that addresses real-world challenges.
+                                </p>
+                                <p class="aboutGrid__jp-line" style="margin-top: 1.5rem;">
+                                    My skillset centers around JavaScript, MERN stack, Python, and C/C++. Whether it is architecting doctor-patient networks or real-time road monitoring, I focus on collaborative, feedback-driven engineering.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contentSection">
+                    <div class="l-inner">
+                        <div class="sectionLabel">
+                            <div class="aboutGrid__dot"></div>
+                            <span>02 / EDUCATION & TRAINING</span>
+                        </div>
+                        
+                        <div class="currentGrid">
+                            <div class="currentItem">
+                                <div class="currentItem__badge"><span class="badgePulse"></span>Pursuing</div>
+                                <span class="currentItem__date">2023 — 2027</span>
+                                <h3 class="currentItem__title">B.Tech in Computer Science</h3>
+                                <span class="currentItem__sub">CGC Landran, Punjab</span>
+                            </div>
+
+                            <div class="currentItem">
+                                <span class="currentItem__date">2022 — 2023</span>
+                                <h3 class="currentItem__title">Intermediate (HBSE) - 73%</h3>
+                                <span class="currentItem__sub">Government Senior Secondary School Alahar</span>
+                            </div>
+
+                            <div class="currentItem">
+                                <span class="currentItem__date">2020 — 2021</span>
+                                <h3 class="currentItem__title">Matriculation (HBSE) - 100%</h3>
+                                <span class="currentItem__sub">Government Senior Secondary School Alahar</span>
+                            </div>
+
+                            <div class="currentItem">
+                                <span class="currentItem__date">4 Weeks Training</span>
+                                <h3 class="currentItem__title">MERN Stack Development</h3>
+                                <span class="currentItem__sub">TCIL IT Training (June 2025)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: SKILLS & HOBBIES -->
+            <section class="l-skills tab-panel" id="panel-skills">
+                <div class="l-inner" style="padding-top: 10rem;">
+                    <div class="sectionLabel">
+                        <div class="aboutGrid__dot"></div>
+                        <span>01 / COMPETENCIES</span>
+                    </div>
+
+                    <div class="skills-showcase-grid">
+                        <div class="skills-block">
+                            <h3>LANGUAGES & TECH</h3>
+                            <div class="skills-pill-list">
+                                <span class="skill-pill">C</span>
+                                <span class="skill-pill">C++</span>
+                                <span class="skill-pill">HTML</span>
+                                <span class="skill-pill">CSS</span>
+                                <span class="skill-pill">JavaScript</span>
+                                <span class="skill-pill">MERN Stack</span>
+                                <span class="skill-pill">NodeJS</span>
+                                <span class="skill-pill">ExpressJS</span>
+                                <span class="skill-pill">MongoDB</span>
+                                <span class="skill-pill">ReactJS</span>
+                                <span class="skill-pill">Python Basics</span>
+                            </div>
+                        </div>
+
+                        <div class="skills-block">
+                            <h3>INTERESTS & HOBBIES</h3>
+                            <div class="skills-pill-list">
+                                <span class="skill-pill secondary">Video Editing</span>
+                                <span class="skill-pill secondary">Gaming</span>
+                                <span class="skill-pill secondary">Content Creation</span>
+                                <span class="skill-pill secondary">Travel Vlogging</span>
+                                <span class="skill-pill secondary">Geospatial Telemetry</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sectionLabel" style="margin-top: 6rem;">
+                        <div class="aboutGrid__dot"></div>
+                        <span>02 / CERTIFICATIONS & RECOGNITIONS</span>
+                    </div>
+
+                    <div class="awards-list">
+                        <div class="awardItem">
+                            <span class="awardItem__num">01</span>
+                            <h3 class="awardItem__project">Eureka! Pitching Competition</h3>
+                            <div class="awardItem__badges">
+                                <span class="awardItem__badge hi">3rd Position</span>
+                                <span class="awardItem__badge">Entrepreneurship</span>
+                            </div>
+                            <span class="awardItem__org">CGC LANDRAN (2024)</span>
+                        </div>
+
+                        <div class="awardItem">
+                            <span class="awardItem__num">02</span>
+                            <h3 class="awardItem__project">Google Student Ambassador</h3>
+                            <div class="awardItem__badges">
+                                <span class="awardItem__badge hi">Tech Leadership</span>
+                            </div>
+                            <span class="awardItem__org">CAMPUS OUTREACH</span>
+                        </div>
+
+                        <div class="awardItem">
+                            <span class="awardItem__num">03</span>
+                            <h3 class="awardItem__project">HP LIFE AI Certification</h3>
+                            <div class="awardItem__badges">
+                                <span class="awardItem__badge">AI for Beginners</span>
+                            </div>
+                            <span class="awardItem__org">HP FOUNDATION</span>
+                        </div>
+
+                        <div class="awardItem">
+                            <span class="awardItem__num">04</span>
+                            <h3 class="awardItem__project">Python Fundamentals</h3>
+                            <div class="awardItem__badges">
+                                <span class="awardItem__badge">Infosys Springboard</span>
+                            </div>
+                            <span class="awardItem__org">TRAINING</span>
+                        </div>
+                    </div>
+
+                    <!-- Copy telemetry footer -->
+                    <div class="about-footer">
+                        <div class="about-footer__meta">
+                            <span class="about-footer__meta-label">STATUS</span>
+                            <div class="about-footer__meta-info">
+                                <span class="about-footer__avail">● AVAILABLE FOR COLLABORATION</span>
+                                <span>INDIA timezone</span>
+                            </div>
+                        </div>
+
+                        <div class="about-footer__marquee-wrap">
+                            <div class="about-footer__marquee" tabindex="0">
+                                <div class="about-footer__marquee-track">
+                                    <span>YANSHAJ <span class="marquee-at">@</span> CGC LANDRAN</span>
+                                    <span class="marquee-star">
+                                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M50 0L63 37L100 50L63 63L50 100L37 63L0 50L37 37Z" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    <span>MERN DEVELOPER</span>
+                                    <span class="marquee-star">
+                                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M50 0L63 37L100 50L63 63L50 100L37 63L0 50L37 37Z" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    <span>CREATIVE ENGINEERING</span>
+                                    <span class="marquee-star">
+                                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M50 0L63 37L100 50L63 63L50 100L37 63L0 50L37 37Z" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="about-footer__actions">
+                            <div class="about-footer__cta-group">
+                                <button class="about-footer__copy js-footer-copy-btn" data-clipboard="2320224.cse.coe@cgc.edu.in">
+                                    <span class="js-footer-copy-text">COPY EMAIL</span>
+                                </button>
+                                <a href="mailto:2320224.cse.coe@cgc.edu.in" class="about-footer__mailto">
+                                    <span>SEND MAIL ↗</span>
+                                </a>
+                            </div>
+                            <div class="about-footer__social-links">
+                                <a href="https://github.com/Yanshaj" target="_blank">GITHUB ↗</a>
+                                <a href="https://www.linkedin.com/in/yanshaj-kamboj" target="_blank">LINKEDIN ↗</a>
+                            </div>
+                            <div class="about-footer__copyright">
+                                © 2026 YANSHAJ.<br>
+                                DESIGN INSPIRED BY <span class="light">YUTA ABE</span>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: PROJECTS (Infinite scroll menu) -->
+            <section class="l-projects tab-panel" id="panel-projects">
                 <h1 class="sr-only">Projects — Yanshaj</h1>
                 <div class="l-inner">
                     <div class="p-menu-wrap">
-                        <ul class="p-menu is-intro">
+                        <ul class="p-menu is-intro" id="infinite-menu">
                             <li>
                                 <a href="#" class="project-link" data-index="0">
                                     <span class="no">01</span>
@@ -154,231 +369,13 @@
                         </ul>
                         
                         <!-- Floating thumbnails following mouse coordinate -->
-                        <ul class="p-thumbnail is-intro">
+                        <ul class="p-thumbnail is-intro" id="infinite-thumbs">
                             <li><img src="img/projects/madimap.png" alt="Madimap Doctor Connection Platform"></li>
                             <li><img src="img/projects/road_safety.png" alt="Road Safety Defects Tracker"></li>
                             <li><img src="img/projects/pitch.png" alt="Eureka Pitching competition 2024"></li>
                             <li><img src="img/projects/travel.png" alt="YouTube Travel Vlog Channel"></li>
                             <li><img src="img/projects/mern.png" alt="MERN Developer projects and training"></li>
                         </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 2: ABOUT -->
-            <section class="l-about tab-panel" id="panel-about">
-                <div class="hero">
-                    <div class="hero__content">
-                        <div>
-                            <span class="hero__tag">Profile</span>
-                            <span class="hero__name-inner">YANSHAJ</span>
-                        </div>
-                        <div class="hero__right">
-                            <span class="hero__years-num">B.TECH</span>
-                            <span class="hero__years-label">COMPUTER SCIENCE</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sub-tab Navigation Row -->
-                <div class="about-subnav-wrap">
-                    <div class="l-inner">
-                        <div class="about-subnav">
-                            <button class="about-subnav__btn active" data-subtab="0">
-                                <span class="num">01</span>
-                                <span class="lbl">OVERVIEW</span>
-                            </button>
-                            <button class="about-subnav__btn" data-subtab="1">
-                                <span class="num">02</span>
-                                <span class="lbl">EDUCATION</span>
-                            </button>
-                            <button class="about-subnav__btn" data-subtab="2">
-                                <span class="num">03</span>
-                                <span class="lbl">SKILLS & AWARDS</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab Panel Viewport -->
-                <div class="about-content-viewport">
-                    <div class="l-inner">
-                        
-                        <!-- Subpanel 0: Overview -->
-                        <div class="about-subpanel active" id="about-panel-0">
-                            <div class="aboutGrid">
-                                <h2 class="aboutGrid__en">
-                                    DEVELOPING <strong>TELEMETRY</strong> FOR<br>
-                                    SOCIAL <span class="aboutGrid__en-sub">IMPACT & CONNECTIVITY</span>
-                                </h2>
-                                <div class="aboutGrid__jp">
-                                    <p class="aboutGrid__jp-line">
-                                        I am a Computer Science BTech student at <strong>Chandigarh Group of Colleges, Landran</strong> (2023-2027) with a passion for building software that addresses real-world challenges.
-                                    </p>
-                                    <p class="aboutGrid__jp-line" style="margin-top: 1.5rem;">
-                                        My skillset centers around JavaScript, MERN stack, Python, and C/C++. Whether it is architecting doctor-patient networks or real-time road monitoring, I focus on collaborative, feedback-driven engineering.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Subpanel 1: Education -->
-                        <div class="about-subpanel" id="about-panel-1">
-                            <div class="currentGrid">
-                                <div class="currentItem">
-                                    <div class="currentItem__badge"><span class="badgePulse"></span>Pursuing</div>
-                                    <span class="currentItem__date">2023 — 2027</span>
-                                    <h3 class="currentItem__title">B.Tech in Computer Science</h3>
-                                    <span class="currentItem__sub">CGC Landran, Punjab</span>
-                                </div>
-
-                                <div class="currentItem">
-                                    <span class="currentItem__date">2022 — 2023</span>
-                                    <h3 class="currentItem__title">Intermediate (HBSE) - 73%</h3>
-                                    <span class="currentItem__sub">Government Senior Secondary School Alahar</span>
-                                </div>
-
-                                <div class="currentItem">
-                                    <span class="currentItem__date">2020 — 2021</span>
-                                    <h3 class="currentItem__title">Matriculation (HBSE) - 100%</h3>
-                                    <span class="currentItem__sub">Government Senior Secondary School Alahar</span>
-                                </div>
-
-                                <div class="currentItem">
-                                    <span class="currentItem__date">4 Weeks Training</span>
-                                    <h3 class="currentItem__title">MERN Stack Development</h3>
-                                    <span class="currentItem__sub">TCIL IT Training (June 2025)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Subpanel 2: Skills & Awards -->
-                        <div class="about-subpanel" id="about-panel-2">
-                            <div class="awardItem">
-                                <span class="awardItem__num">01</span>
-                                <h3 class="awardItem__project">Eureka! Pitching Competition</h3>
-                                <div class="awardItem__badges">
-                                    <span class="awardItem__badge hi">3rd Position</span>
-                                    <span class="awardItem__badge">Entrepreneurship</span>
-                                    <span class="awardItem__badge">Pitch Deck</span>
-                                </div>
-                                <span class="awardItem__org">CGC LANDRAN (2024)</span>
-                            </div>
-
-                            <div class="awardItem">
-                                <span class="awardItem__num">02</span>
-                                <h3 class="awardItem__project">Google Student Ambassador</h3>
-                                <div class="awardItem__badges">
-                                    <span class="awardItem__badge hi">Tech Awareness</span>
-                                    <span class="awardItem__badge">Community Leadership</span>
-                                </div>
-                                <span class="awardItem__org">CAMPUS ENGAGEMENT</span>
-                            </div>
-
-                            <div class="awardItem">
-                                <span class="awardItem__num">03</span>
-                                <h3 class="awardItem__project">HP LIFE AI Certificate</h3>
-                                <div class="awardItem__badges">
-                                    <span class="awardItem__badge">AI for Beginners</span>
-                                    <span class="awardItem__badge">HP Foundation (Dec 2025)</span>
-                                </div>
-                                <span class="awardItem__org">CERTIFICATION</span>
-                            </div>
-
-                            <div class="awardItem">
-                                <span class="awardItem__num">04</span>
-                                <h3 class="awardItem__project">Python Fundamentals</h3>
-                                <div class="awardItem__badges">
-                                    <span class="awardItem__badge">Infosys Springboard</span>
-                                    <span class="awardItem__badge">Automation basics</span>
-                                </div>
-                                <span class="awardItem__org">TRAINING</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Footer copy telemetry details -->
-                <div class="about-footer">
-                    <div class="about-footer__meta">
-                        <span class="about-footer__meta-label">STATUS</span>
-                        <div class="about-footer__meta-info">
-                            <span class="about-footer__avail">● AVAILABLE FOR COLLABORATION</span>
-                            <span>INDIA timezone</span>
-                        </div>
-                    </div>
-
-                    <div class="about-footer__marquee-wrap">
-                        <div class="about-footer__marquee" tabindex="0">
-                            <div class="about-footer__marquee-track">
-                                <span>YANSHAJ <span class="marquee-at">@</span> CGC LANDRAN</span>
-                                <span class="marquee-star">
-                                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M50 0L63 37L100 50L63 63L50 100L37 63L0 50L37 37Z" fill="currentColor"/>
-                                    </svg>
-                                </span>
-                                <span>MERN DEVELOPER</span>
-                                <span class="marquee-star">
-                                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M50 0L63 37L100 50L63 63L50 100L37 63L0 50L37 37Z" fill="currentColor"/>
-                                    </svg>
-                                </span>
-                                <span>CREATIVE ENGINEERING</span>
-                                <span class="marquee-star">
-                                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M50 0L63 37L100 50L63 63L50 100L37 63L0 50L37 37Z" fill="currentColor"/>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="about-footer__actions">
-                        <div class="about-footer__cta-group">
-                            <button class="about-footer__copy js-footer-copy-btn" data-clipboard="2320224.cse.coe@cgc.edu.in">
-                                <span class="js-footer-copy-text">COPY EMAIL</span>
-                            </button>
-                            <a href="mailto:2320224.cse.coe@cgc.edu.in" class="about-footer__mailto">
-                                <span>SEND MAIL ↗</span>
-                            </a>
-                        </div>
-                        <div class="about-footer__social-links">
-                            <a href="https://github.com/Yanshaj" target="_blank">GITHUB ↗</a>
-                            <a href="https://www.linkedin.com/in/yanshaj-kamboj" target="_blank">LINKEDIN ↗</a>
-                        </div>
-                        <div class="about-footer__copyright">
-                            © 2026 YANSHAJ.<br>
-                            DESIGN INSPIRED BY <span class="light">YUTA ABE</span>.
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 3: PLAYGROUND -->
-            <section class="l-playground tab-panel" id="panel-playground">
-                <div class="l-inner">
-                    <div class="pg-hero">
-                        <h2 class="pg-title">INTERACTIVE CORE</h2>
-                        <p class="pg-desc">
-                            A showcase of raw browser telemetry. Toggle SHIFT to engage the Lightsout sensory game, or click below to start directly.
-                        </p>
-                    </div>
-
-                    <div class="playground-grid">
-                        <div class="pg-card" id="btn-trigger-reaction">
-                            <div class="pg-card__icon">⚡</div>
-                            <h3 class="pg-card__title">Reaction Telemetry</h3>
-                            <p class="pg-card__desc">Measure visual and physical cognitive response times down to milliseconds.</p>
-                            <span class="pg-card__action">ENGAGE GAME</span>
-                        </div>
-
-                        <div class="pg-card" id="btn-trigger-physics">
-                            <div class="pg-card__icon">⚛</div>
-                            <h3 class="pg-card__title">Gravitational Array</h3>
-                            <p class="pg-card__desc">Inject random high-energy dust particles into the background blueprint grid on click.</p>
-                            <span class="pg-card__action">ACTIVATE DUST</span>
-                        </div>
                     </div>
                 </div>
             </section>
