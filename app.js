@@ -510,69 +510,91 @@ function initTechCanvas() {
 
     // 3D vertices of a stylized geometric Iron Man helmet centered at (0, 0, 0)
     const ironManVertices = [
-        { x: 0,   y: 45,  z: 40 },  // 0: Brow Center
-        { x: -35, y: 45,  z: 35 },  // 1: Brow Left
-        { x: 35,  y: 45,  z: 35 },  // 2: Brow Right
-        { x: 0,   y: 100, z: 0 },   // 3: Forehead Top Center
-        { x: -60, y: 85,  z: -20 }, // 4: Forehead Top Left
-        { x: 60,  y: 85,  z: -20 }, // 5: Forehead Top Right
-        { x: -35, y: 28,  z: 38 },  // 6: Left Eye Top Inner
-        { x: -65, y: 30,  z: 32 },  // 7: Left Eye Top Outer
-        { x: -62, y: 22,  z: 32 },  // 8: Left Eye Bottom Outer
-        { x: -35, y: 20,  z: 38 },  // 9: Left Eye Bottom Inner
-        { x: 35,  y: 28,  z: 38 },  // 10: Right Eye Top Inner
-        { x: 65,  y: 30,  z: 32 },  // 11: Right Eye Top Outer
-        { x: 62,  y: 22,  z: 32 },  // 12: Right Eye Bottom Outer
-        { x: 35,  y: 20,  z: 38 },  // 13: Right Eye Bottom Inner
-        { x: 0,   y: 5,   z: 45 },  // 14: Nose bridge / Faceplate mid
-        { x: -40, y: -15, z: 35 },  // 15: Left Cheek Inner Corner
-        { x: 40,  y: -15, z: 35 },  // 16: Right Cheek Inner Corner
-        { x: -30, y: -42, z: 32 },  // 17: Mouth Left
-        { x: 30,  y: -42, z: 32 },  // 18: Mouth Right
-        { x: 0,   y: -55, z: 35 },  // 19: Mouth / Chin Top Center
-        { x: -25, y: -95, z: 20 },  // 20: Chin Bottom Left
-        { x: 25,  y: -95, z: 20 },  // 21: Chin Bottom Right
-        { x: -80, y: -35, z: -15 }, // 22: Jaw Left Outer
-        { x: 80,  y: -35, z: -15 }, // 23: Jaw Right Outer
-        { x: -85, y: 15,  z: -10 }, // 24: Cheekbone Left Outer
-        { x: 85,  y: 15,  z: -10 }, // 25: Cheekbone Right Outer
-        { x: -90, y: 25,  z: -35 }, // 26: Ear Left Center
-        { x: 90,  y: 25,  z: -35 }  // 27: Ear Right Center
+        // Crown & Forehead
+        { x: 0,   y: 105, z: 0 },   // 0: Crown Top Center
+        { x: -55, y: 95,  z: -20 }, // 1: Crown Top Left
+        { x: 55,  y: 95,  z: -20 }, // 2: Crown Top Right
+        { x: -30, y: 80,  z: 20 },  // 3: Forehead Plate Top Left
+        { x: 30,  y: 80,  z: 20 },  // 4: Forehead Plate Top Right
+        { x: -25, y: 45,  z: 40 },  // 5: Forehead Plate Bottom Left (above left eye)
+        { x: 25,  y: 45,  z: 40 },  // 6: Forehead Plate Bottom Right (above right eye)
+        // Brow & Nose bridge
+        { x: -65, y: 48,  z: 25 },  // 7: Brow Outer Left
+        { x: 65,  y: 48,  z: 25 },  // 8: Brow Outer Right
+        { x: 0,   y: 32,  z: 45 },  // 9: Brow Mid Center (Nose Bridge Top)
+        // Left Eye Slit (trapezoid, higher on outer, lower on inner)
+        { x: -15, y: 28,  z: 42 },  // 10: Left Eye Inner Top
+        { x: -50, y: 35,  z: 32 },  // 11: Left Eye Outer Top
+        { x: -48, y: 27,  z: 32 },  // 12: Left Eye Outer Bottom
+        { x: -18, y: 22,  z: 42 },  // 13: Left Eye Inner Bottom
+        // Right Eye Slit (trapezoid, higher on outer, lower on inner)
+        { x: 15,  y: 28,  z: 42 },  // 14: Right Eye Inner Top
+        { x: 50,  y: 35,  z: 32 },  // 15: Right Eye Outer Top
+        { x: 48,  y: 27,  z: 32 },  // 16: Right Eye Outer Bottom
+        { x: 18,  y: 22,  z: 42 },  // 17: Right Eye Inner Bottom
+        // Nose & Cheeks
+        { x: 0,   y: 15,  z: 47 },  // 18: Nose Bridge Center
+        { x: -35, y: -10, z: 38 },  // 19: Cheek Gold Indent Left (Inner)
+        { x: 35,  y: -10, z: 38 },  // 20: Cheek Gold Indent Right (Inner)
+        { x: -60, y: 10,  z: 25 },  // 21: Cheek Outer Left
+        { x: 60,  y: 10,  z: 25 },  // 22: Cheek Outer Right
+        // Mouth
+        { x: 0,   y: -38, z: 38 },  // 23: Mouth Center Top
+        { x: -30, y: -38, z: 33 },  // 24: Mouth Outer Left
+        { x: 30,  y: -38, z: 33 },  // 25: Mouth Outer Right
+        // Chin Guard
+        { x: -20, y: -55, z: 35 },  // 26: Chin Top Left
+        { x: 20,  y: -55, z: 35 },  // 27: Chin Top Right
+        { x: -15, y: -85, z: 25 },  // 28: Chin Bottom Left
+        { x: 15,  y: -85, z: 25 },  // 29: Chin Bottom Right
+        // Outer Red Frame (Temples, ears, jaw)
+        { x: -80, y: 35,  z: -10 }, // 30: Ear/Temple Left
+        { x: 80,  y: 35,  z: -10 }, // 31: Ear/Temple Right
+        { x: -75, y: -30, z: -5 },  // 32: Jaw Corner Left
+        { x: 75,  y: -30, z: -5 },  // 33: Jaw Corner Right
+        { x: -35, y: -75, z: 15 },  // 34: Jaw Bottom Left (near chin)
+        { x: 35,  y: -75, z: 15 }   // 35: Jaw Bottom Right (near chin)
     ];
 
-    // Edges connecting the vertices
+    // Edges connecting the vertices to outline panels
     const ironManEdges = [
-        // Left Eye Slit Loop
-        { a: 6, b: 7 }, { a: 7, b: 8 }, { a: 8, b: 9 }, { a: 9, b: 6 },
+        // 1. Forehead Plate Outline (Gold)
+        { a: 3, b: 4 }, { a: 3, b: 5 }, { a: 4, b: 6 },
+        { a: 5, b: 9 }, { a: 6, b: 9 },
+        { a: 0, b: 3 }, { a: 0, b: 4 },
         
-        // Right Eye Slit Loop
-        { a: 10, b: 11 }, { a: 11, b: 12 }, { a: 12, b: 13 }, { a: 13, b: 10 },
+        // 2. Crown & Temple Crest Outer Line
+        { a: 5, b: 7 }, { a: 6, b: 8 },
+        { a: 7, b: 30 }, { a: 8, b: 31 },
+        { a: 1, b: 3 }, { a: 2, b: 4 },
+        { a: 1, b: 7 }, { a: 2, b: 8 },
+        { a: 0, b: 1 }, { a: 0, b: 2 },
         
-        // Outer Helmet Perimeter
-        { a: 3, b: 4 }, { a: 4, b: 24 }, { a: 24, b: 22 }, { a: 22, b: 20 },
-        { a: 20, b: 21 }, { a: 21, b: 23 }, { a: 23, b: 25 }, { a: 25, b: 5 }, { a: 5, b: 3 },
+        // 3. Eye Slits Outer Connections
+        { a: 10, b: 11 }, { a: 11, b: 12 }, { a: 12, b: 13 }, { a: 13, b: 10 }, // Left Eye
+        { a: 14, b: 15 }, { a: 15, b: 16 }, { a: 16, b: 17 }, { a: 17, b: 14 }, // Right Eye
+        { a: 5, b: 10 }, { a: 7, b: 11 },
+        { a: 6, b: 14 }, { a: 8, b: 15 },
         
-        // Forehead plates
-        { a: 3, b: 0 }, { a: 4, b: 1 }, { a: 5, b: 2 },
+        // 4. Nose & Cheeks contours
+        { a: 9, b: 18 }, { a: 18, b: 19 }, { a: 18, b: 20 },
+        { a: 13, b: 19 }, { a: 17, b: 20 },
+        { a: 7, b: 21 }, { a: 8, b: 22 },
+        { a: 21, b: 19 }, { a: 22, b: 20 },
         
-        // Faceplate Brow & Nose details
-        { a: 0, b: 1 }, { a: 1, b: 6 }, { a: 6, b: 14 }, { a: 14, b: 10 }, { a: 10, b: 2 }, { a: 2, b: 0 },
-        { a: 1, b: 7 }, { a: 2, b: 11 },
+        // 5. Mouth & Chin
+        { a: 19, b: 24 }, { a: 20, b: 25 },
+        { a: 24, b: 23 }, { a: 25, b: 23 },
+        { a: 18, b: 23 },
+        { a: 24, b: 26 }, { a: 25, b: 27 },
+        { a: 26, b: 27 }, { a: 26, b: 28 }, { a: 27, b: 29 }, { a: 28, b: 29 },
         
-        // Nose plate / Mouth contour
-        { a: 14, b: 15 }, { a: 15, b: 17 }, { a: 17, b: 19 }, { a: 19, b: 18 }, { a: 18, b: 16 }, { a: 16, b: 14 },
-        { a: 14, b: 19 },
-        
-        // Cheekbone contours
-        { a: 7, b: 24 }, { a: 8, b: 15 }, { a: 15, b: 22 },
-        { a: 11, b: 25 }, { a: 12, b: 16 }, { a: 16, b: 23 },
-        
-        // Chin guard
-        { a: 17, b: 20 }, { a: 18, b: 21 },
-        
-        // Ear disc anchors
-        { a: 24, b: 26 }, { a: 26, b: 22 },
-        { a: 25, b: 27 }, { a: 27, b: 23 }
+        // 6. Outer Jaw, Ears, and Side Outline
+        { a: 30, b: 32 }, { a: 31, b: 33 },
+        { a: 21, b: 32 }, { a: 22, b: 33 },
+        { a: 32, b: 34 }, { a: 33, b: 35 },
+        { a: 34, b: 28 }, { a: 35, b: 29 },
+        { a: 19, b: 34 }, { a: 20, b: 35 }
     ];
 
     let rotX = 0, rotY = 0;
@@ -707,9 +729,9 @@ function initTechCanvas() {
         const projected = [];
         ironManVertices.forEach((v, index) => {
             let rawY = v.y;
-            // Compress eye vertices on blink (left: 6-9, right: 10-13) relative to eye center Y=25
-            if (index >= 6 && index <= 13) {
-                rawY = 25 + (v.y - 25) * blinkValue;
+            // Compress eye vertices on blink (left: 10-13, right: 14-17) relative to eye center Y=28
+            if (index >= 10 && index <= 17) {
+                rawY = 28 + (v.y - 28) * blinkValue;
             }
 
             // Apply breathe scale
@@ -762,22 +784,22 @@ function initTechCanvas() {
         ctx.restore();
 
         // 3. RENDER GLOWING EYE SLIT POLYGONS
-        // Left Eye: 6 -> 7 -> 8 -> 9
-        ctx.beginPath();
-        ctx.moveTo(projected[6].x, projected[6].y);
-        ctx.lineTo(projected[7].x, projected[7].y);
-        ctx.lineTo(projected[8].x, projected[8].y);
-        ctx.lineTo(projected[9].x, projected[9].y);
-        ctx.closePath();
-        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.45)';
-        ctx.fill();
-
-        // Right Eye: 10 -> 11 -> 12 -> 13
+        // Left Eye: 10 -> 11 -> 12 -> 13
         ctx.beginPath();
         ctx.moveTo(projected[10].x, projected[10].y);
         ctx.lineTo(projected[11].x, projected[11].y);
         ctx.lineTo(projected[12].x, projected[12].y);
         ctx.lineTo(projected[13].x, projected[13].y);
+        ctx.closePath();
+        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.45)';
+        ctx.fill();
+
+        // Right Eye: 14 -> 15 -> 16 -> 17
+        ctx.beginPath();
+        ctx.moveTo(projected[14].x, projected[14].y);
+        ctx.lineTo(projected[15].x, projected[15].y);
+        ctx.lineTo(projected[16].x, projected[16].y);
+        ctx.lineTo(projected[17].x, projected[17].y);
         ctx.closePath();
         ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.45)';
         ctx.fill();
