@@ -508,58 +508,81 @@ function initTechCanvas() {
     }
     window.addEventListener('resize', resize);
 
-    // 3D vertices of a stylized geometric cat face centered at (0, 0, 0)
-    const catVertices = [
-        { x: 0,   y: 15,  z: 50 },  // 0: Nose tip
-        { x: 0,   y: -10, z: 40 },  // 1: Mouth center
-        { x: -30, y: -20, z: 20 },  // 2: Left mouth corner
-        { x: 30,  y: -20, z: 20 },  // 3: Right mouth corner
-        { x: -45, y: 35,  z: 35 },  // 4: Left eye inner
-        { x: -75, y: 40,  z: 35 },  // 5: Left eye outer
-        { x: 45,  y: 35,  z: 35 },  // 6: Right eye inner
-        { x: 75,  y: 40,  z: 35 },  // 7: Right eye outer
-        { x: -110,y: 0,   z: 0 },   // 8: Left cheek outer
-        { x: 110, y: 0,   z: 0 },   // 9: Right cheek outer
-        { x: 0,   y: -80, z: 10 },  // 10: Chin
-        { x: -90, y: 70,  z: -20 }, // 11: Left forehead temple
-        { x: 90,  y: 70,  z: -20 }, // 12: Right forehead temple
-        { x: 0,   y: 90,  z: 0 },   // 13: Forehead center top
-        { x: -100,y: 160, z: -30 }, // 14: Left ear tip
-        { x: -40, y: 100, z: -20 }, // 15: Left ear inner base
-        { x: 100, y: 160, z: -30 }, // 16: Right ear tip
-        { x: 40,  y: 100, z: -20 }  // 17: Right ear inner base
+    // 3D vertices of a stylized geometric Iron Man helmet centered at (0, 0, 0)
+    const ironManVertices = [
+        { x: 0,   y: 45,  z: 40 },  // 0: Brow Center
+        { x: -35, y: 45,  z: 35 },  // 1: Brow Left
+        { x: 35,  y: 45,  z: 35 },  // 2: Brow Right
+        { x: 0,   y: 100, z: 0 },   // 3: Forehead Top Center
+        { x: -60, y: 85,  z: -20 }, // 4: Forehead Top Left
+        { x: 60,  y: 85,  z: -20 }, // 5: Forehead Top Right
+        { x: -35, y: 28,  z: 38 },  // 6: Left Eye Top Inner
+        { x: -65, y: 30,  z: 32 },  // 7: Left Eye Top Outer
+        { x: -62, y: 22,  z: 32 },  // 8: Left Eye Bottom Outer
+        { x: -35, y: 20,  z: 38 },  // 9: Left Eye Bottom Inner
+        { x: 35,  y: 28,  z: 38 },  // 10: Right Eye Top Inner
+        { x: 65,  y: 30,  z: 32 },  // 11: Right Eye Top Outer
+        { x: 62,  y: 22,  z: 32 },  // 12: Right Eye Bottom Outer
+        { x: 35,  y: 20,  z: 38 },  // 13: Right Eye Bottom Inner
+        { x: 0,   y: 5,   z: 45 },  // 14: Nose bridge / Faceplate mid
+        { x: -40, y: -15, z: 35 },  // 15: Left Cheek Inner Corner
+        { x: 40,  y: -15, z: 35 },  // 16: Right Cheek Inner Corner
+        { x: -30, y: -42, z: 32 },  // 17: Mouth Left
+        { x: 30,  y: -42, z: 32 },  // 18: Mouth Right
+        { x: 0,   y: -55, z: 35 },  // 19: Mouth / Chin Top Center
+        { x: -25, y: -95, z: 20 },  // 20: Chin Bottom Left
+        { x: 25,  y: -95, z: 20 },  // 21: Chin Bottom Right
+        { x: -80, y: -35, z: -15 }, // 22: Jaw Left Outer
+        { x: 80,  y: -35, z: -15 }, // 23: Jaw Right Outer
+        { x: -85, y: 15,  z: -10 }, // 24: Cheekbone Left Outer
+        { x: 85,  y: 15,  z: -10 }, // 25: Cheekbone Right Outer
+        { x: -90, y: 25,  z: -35 }, // 26: Ear Left Center
+        { x: 90,  y: 25,  z: -35 }  // 27: Ear Right Center
     ];
 
     // Edges connecting the vertices
-    const catEdges = [
-        // Nose, mouth, cheeks & chin
-        { a: 0, b: 1 }, { a: 1, b: 2 }, { a: 1, b: 3 },
-        { a: 0, b: 4 }, { a: 0, b: 6 },
-        { a: 2, b: 8 }, { a: 3, b: 9 }, { a: 2, b: 10 }, { a: 3, b: 10 },
-        // Left Eye loop
-        { a: 4, b: 5 }, { a: 4, b: 11 }, { a: 5, b: 11 }, { a: 5, b: 8 },
-        // Right Eye loop
-        { a: 6, b: 7 }, { a: 6, b: 12 }, { a: 7, b: 12 }, { a: 7, b: 9 },
-        // Cheeks & Chin perimeter
-        { a: 8, b: 10 }, { a: 9, b: 10 },
-        // Forehead center
-        { a: 13, b: 11 }, { a: 13, b: 12 }, { a: 13, b: 15 }, { a: 13, b: 17 },
-        // Left Ear loop
-        { a: 11, b: 14 }, { a: 14, b: 15 }, { a: 15, b: 11 },
-        // Right Ear loop
-        { a: 12, b: 16 }, { a: 16, b: 17 }, { a: 17, b: 12 },
-        // Head perimeter connector
-        { a: 8, b: 11 }, { a: 9, b: 12 }
+    const ironManEdges = [
+        // Left Eye Slit Loop
+        { a: 6, b: 7 }, { a: 7, b: 8 }, { a: 8, b: 9 }, { a: 9, b: 6 },
+        
+        // Right Eye Slit Loop
+        { a: 10, b: 11 }, { a: 11, b: 12 }, { a: 12, b: 13 }, { a: 13, b: 10 },
+        
+        // Outer Helmet Perimeter
+        { a: 3, b: 4 }, { a: 4, b: 24 }, { a: 24, b: 22 }, { a: 22, b: 20 },
+        { a: 20, b: 21 }, { a: 21, b: 23 }, { a: 23, b: 25 }, { a: 25, b: 5 }, { a: 5, b: 3 },
+        
+        // Forehead plates
+        { a: 3, b: 0 }, { a: 4, b: 1 }, { a: 5, b: 2 },
+        
+        // Faceplate Brow & Nose details
+        { a: 0, b: 1 }, { a: 1, b: 6 }, { a: 6, b: 14 }, { a: 14, b: 10 }, { a: 10, b: 2 }, { a: 2, b: 0 },
+        { a: 1, b: 7 }, { a: 2, b: 11 },
+        
+        // Nose plate / Mouth contour
+        { a: 14, b: 15 }, { a: 15, b: 17 }, { a: 17, b: 19 }, { a: 19, b: 18 }, { a: 18, b: 16 }, { a: 16, b: 14 },
+        { a: 14, b: 19 },
+        
+        // Cheekbone contours
+        { a: 7, b: 24 }, { a: 8, b: 15 }, { a: 15, b: 22 },
+        { a: 11, b: 25 }, { a: 12, b: 16 }, { a: 16, b: 23 },
+        
+        // Chin guard
+        { a: 17, b: 20 }, { a: 18, b: 21 },
+        
+        // Ear disc anchors
+        { a: 24, b: 26 }, { a: 26, b: 22 },
+        { a: 25, b: 27 }, { a: 27, b: 23 }
     ];
 
-    let catRotX = 0, catRotY = 0;
-    let catTargetRotX = 0, catTargetRotY = 0;
+    let rotX = 0, rotY = 0;
+    let targetRotX = 0, targetRotY = 0;
 
     window.addEventListener('mousemove', (e) => {
         const nx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
         const ny = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-        catTargetRotY = nx * 0.5; // Yaw
-        catTargetRotX = -ny * 0.4; // Pitch
+        targetRotY = nx * 0.45; // Yaw looking range
+        targetRotX = -ny * 0.35; // Pitch looking range
     });
 
     const nodeCount = 28;
@@ -596,9 +619,9 @@ function initTechCanvas() {
         });
     }
 
-    // Eye Blink variables
+    // Eye shut/blink state variables
     let blinkValue = 1;
-    let nextBlinkTime = Date.now() + Math.random() * 4000 + 2000;
+    let nextBlinkTime = Date.now() + Math.random() * 5000 + 3000;
     let blinkEndTime = 0;
 
     function draw() {
@@ -655,20 +678,20 @@ function initTechCanvas() {
 
         // 1. ANIMATION METRICS (floating & breathing & blinking)
         const time = performance.now() * 0.0015;
-        const floatY = Math.sin(time) * 15; // Vertical floating offset
+        const floatY = Math.sin(time) * 15; // Vertical floating wave
         const scalePulse = 1.0 + Math.cos(time * 0.8) * 0.04; // Breathing scale pulse
         
-        // Idle head swaying drift (active when mouse is still)
+        // Idle swaying drift when mouse is still
         const idleX = Math.sin(time * 0.5) * 0.08;
         const idleY = Math.cos(time * 0.4) * 0.08;
-        catRotY += (catTargetRotY + idleY - catRotY) * 0.08;
-        catRotX += (catTargetRotX + idleX - catRotX) * 0.08;
+        rotY += (targetRotY + idleY - rotY) * 0.08;
+        rotX += (targetRotX + idleX - rotX) * 0.08;
 
-        // Blinking system
+        // Blinking (Reboot eye compression)
         if (Date.now() > nextBlinkTime) {
-            blinkValue = 0.05; // blink flat eyes
-            blinkEndTime = Date.now() + 150;
-            nextBlinkTime = Date.now() + Math.random() * 5000 + 3000;
+            blinkValue = 0.05; // eye slit shut
+            blinkEndTime = Date.now() + 180;
+            nextBlinkTime = Date.now() + Math.random() * 6000 + 4000;
         }
         if (blinkEndTime > 0 && Date.now() > blinkEndTime) {
             blinkValue = 1;
@@ -682,11 +705,11 @@ function initTechCanvas() {
 
         // Rotate & Project vertices
         const projected = [];
-        catVertices.forEach((v, index) => {
+        ironManVertices.forEach((v, index) => {
             let rawY = v.y;
-            // Compress eye vertices on blink (indices 4, 5, 6, 7)
-            if (index >= 4 && index <= 7) {
-                rawY = 37 + (v.y - 37) * blinkValue;
+            // Compress eye vertices on blink (left: 6-9, right: 10-13) relative to eye center Y=25
+            if (index >= 6 && index <= 13) {
+                rawY = 25 + (v.y - 25) * blinkValue;
             }
 
             // Apply breathe scale
@@ -695,14 +718,14 @@ function initTechCanvas() {
             const zVal = v.z * scalePulse;
 
             // Rotation X
-            const cosX = Math.cos(catRotX);
-            const sinX = Math.sin(catRotX);
+            const cosX = Math.cos(rotX);
+            const sinX = Math.sin(rotX);
             const y1 = yVal * cosX - zVal * sinX;
             const z1 = yVal * sinX + zVal * cosX;
             
             // Rotation Y
-            const cosY = Math.cos(catRotY);
-            const sinY = Math.sin(catRotY);
+            const cosY = Math.cos(rotY);
+            const sinY = Math.sin(rotY);
             const x2 = xVal * cosY + z1 * sinY;
             const z2 = -xVal * sinY + z1 * cosY;
 
@@ -711,7 +734,7 @@ function initTechCanvas() {
 
             projected.push({
                 x: cx + x2 * scale * sizeMultiplier,
-                y: cy - (y1 + floatY) * scale * sizeMultiplier // Float offset translation
+                y: cy - (y1 + floatY) * scale * sizeMultiplier
             });
         });
 
@@ -727,7 +750,7 @@ function initTechCanvas() {
         ctx.shadowColor = isLightsout ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.15)';
 
         // Draw edges
-        catEdges.forEach(edge => {
+        ironManEdges.forEach(edge => {
             const p1 = projected[edge.a];
             const p2 = projected[edge.b];
             ctx.beginPath();
@@ -735,50 +758,28 @@ function initTechCanvas() {
             ctx.lineTo(p2.x, p2.y);
             ctx.stroke();
         });
-
-        // Draw Whiskers
-        const cheekL = projected[8];
-        const cheekR = projected[9];
-        const whiskersL = [
-            { x: -70, y: 15 }, { x: -80, y: -5 }, { x: -75, y: -25 }
-        ];
-        const whiskersR = [
-            { x: 70, y: 15 }, { x: 80, y: -5 }, { x: 75, y: -25 }
-        ];
-
-        whiskersL.forEach(w => {
-            const cosY = Math.cos(catRotY);
-            const wx = w.x * cosY;
-            ctx.beginPath();
-            ctx.moveTo(cheekL.x, cheekL.y);
-            ctx.lineTo(cheekL.x + wx * sizeMultiplier, cheekL.y - w.y * sizeMultiplier);
-            ctx.stroke();
-        });
-
-        whiskersR.forEach(w => {
-            const cosY = Math.cos(catRotY);
-            const wx = w.x * cosY;
-            ctx.beginPath();
-            ctx.moveTo(cheekR.x, cheekR.y);
-            ctx.lineTo(cheekR.x + wx * sizeMultiplier, cheekR.y - w.y * sizeMultiplier);
-            ctx.stroke();
-        });
         
-        ctx.restore(); // Clear shadow blur settings for outer elements
+        ctx.restore();
 
-        // Glowing eyes details (yellow in lightsout mode, soft white in normal mode!)
-        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.5)';
-        const eyeL = {
-            x: (projected[4].x + projected[5].x) / 2,
-            y: (projected[4].y + projected[5].y) / 2
-        };
-        const eyeR = {
-            x: (projected[6].x + projected[7].x) / 2,
-            y: (projected[6].y + projected[7].y) / 2
-        };
+        // 3. RENDER GLOWING EYE SLIT POLYGONS
+        // Left Eye: 6 -> 7 -> 8 -> 9
         ctx.beginPath();
-        ctx.arc(eyeL.x, eyeL.y, 4 * sizeMultiplier * blinkValue, 0, Math.PI * 2);
-        ctx.arc(eyeR.x, eyeR.y, 4 * sizeMultiplier * blinkValue, 0, Math.PI * 2);
+        ctx.moveTo(projected[6].x, projected[6].y);
+        ctx.lineTo(projected[7].x, projected[7].y);
+        ctx.lineTo(projected[8].x, projected[8].y);
+        ctx.lineTo(projected[9].x, projected[9].y);
+        ctx.closePath();
+        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.45)';
+        ctx.fill();
+
+        // Right Eye: 10 -> 11 -> 12 -> 13
+        ctx.beginPath();
+        ctx.moveTo(projected[10].x, projected[10].y);
+        ctx.lineTo(projected[11].x, projected[11].y);
+        ctx.lineTo(projected[12].x, projected[12].y);
+        ctx.lineTo(projected[13].x, projected[13].y);
+        ctx.closePath();
+        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.45)';
         ctx.fill();
 
         // Draw physics dust gravity particles
