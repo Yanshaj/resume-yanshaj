@@ -597,6 +597,39 @@ function initTechCanvas() {
         { a: 19, b: 34 }, { a: 20, b: 35 }
     ];
 
+    // Define 3D faces (polygons) of the Iron Man helmet for depth sorting and solid fills
+    const ironManFaces = [
+        // --- RED HELMET DOME / BACK ---
+        { indices: [0, 3, 4], type: 'red' },
+        { indices: [0, 1, 3], type: 'red' },
+        { indices: [0, 2, 4], type: 'red' },
+        { indices: [1, 7, 3], type: 'red' },
+        { indices: [2, 8, 4], type: 'red' },
+        { indices: [7, 30, 32, 21], type: 'red' },
+        { indices: [8, 31, 33, 22], type: 'red' },
+        { indices: [21, 32, 34, 19], type: 'red' },
+        { indices: [22, 33, 35, 20], type: 'red' },
+        { indices: [34, 28, 26, 24, 19], type: 'red' },
+        { indices: [35, 29, 27, 25, 20], type: 'red' },
+        { indices: [1, 30, 7], type: 'red' },
+        { indices: [2, 31, 8], type: 'red' },
+
+        // --- GOLD FACEPLATE ---
+        { indices: [3, 5, 9, 6, 4], type: 'gold' },
+        { indices: [5, 7, 10], type: 'gold' },
+        { indices: [6, 8, 14], type: 'gold' },
+        { indices: [9, 10, 18, 14], type: 'gold' },
+        { indices: [10, 7, 21, 19, 13], type: 'gold' },
+        { indices: [14, 8, 22, 20, 17], type: 'gold' },
+        { indices: [18, 19, 24, 23], type: 'gold' },
+        { indices: [18, 20, 25, 23], type: 'gold' },
+        { indices: [26, 27, 29, 28], type: 'gold' },
+
+        // --- EYE SLITS ---
+        { indices: [10, 11, 12, 13], type: 'eye' },
+        { indices: [14, 15, 16, 17], type: 'eye' }
+    ];
+
     let rotX = 0, rotY = 0;
     let targetRotX = 0, targetRotY = 0;
 
@@ -725,8 +758,10 @@ function initTechCanvas() {
         const cy = height / 2;
         const d = 400; // Focal camera depth
 
-        // Rotate & Project vertices
+        // Rotate & Project vertices, saving rotated coordinates for Z depth sorting
+        const rotatedVertices = [];
         const projected = [];
+        
         ironManVertices.forEach((v, index) => {
             let rawY = v.y;
             // Compress eye vertices on blink (left: 10-13, right: 14-17) relative to eye center Y=28
@@ -754,55 +789,103 @@ function initTechCanvas() {
             // Perspective Projection
             const scale = d / (d + z2);
 
+            rotatedVertices.push({ x: x2, y: y1, z: z2 });
             projected.push({
                 x: cx + x2 * scale * sizeMultiplier,
                 y: cy - (y1 + floatY) * scale * sizeMultiplier
             });
         });
 
-        // 2. STYLING PARAMETERS (Highly visible White neon style)
+        // Compute face depths and sort (painter's algorithm)
+        const sortedFaces = ironManFaces.map(face => {
+            let sumZ = 0;
+            face.indices.forEach(idx => {
+                sumZ += rotatedVertices[idx].z;
+            });
+            return {
+                face: face,
+                avgZ: sumZ / face.indices.length
+            };
+        }).sort((a, b) => b.avgZ - a.avgZ); // Sort furthest away (largest Z depth) first
+
         const isLightsout = document.body.classList.contains('is-lightsout');
-        
-        ctx.save();
-        ctx.lineWidth = isLightsout ? 3.0 : 1.8;
-        ctx.strokeStyle = isLightsout ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.38)';
-        
-        // Add neon/glow blur shadows
-        ctx.shadowBlur = isLightsout ? 14 : 6;
-        ctx.shadowColor = isLightsout ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.15)';
 
-        // Draw edges
-        ironManEdges.forEach(edge => {
-            const p1 = projected[edge.a];
-            const p2 = projected[edge.b];
+        // Dynamic Gradients for Normal (Solid Colored Red & Gold) Mode
+        const redGrad = ctx.createLinearGradient(cx - 100 * sizeMultiplier, cy - 100 * sizeMultiplier, cx + 100 * sizeMultiplier, cy + 100 * sizeMultiplier);
+        redGrad.addColorStop(0, '#c22323'); // Bright metallic red
+        redGrad.addColorStop(0.4, '#8a1111'); // Mid red
+        redGrad.addColorStop(1, '#4f0404'); // Dark shaded red
+
+        const goldGrad = ctx.createLinearGradient(cx - 80 * sizeMultiplier, cy - 80 * sizeMultiplier, cx + 80 * sizeMultiplier, cy + 80 * sizeMultiplier);
+        goldGrad.addColorStop(0, '#fce05d'); // Bright gold
+        goldGrad.addColorStop(0.4, '#d1ab1d'); // Mid gold
+        goldGrad.addColorStop(1, '#7a5f05'); // Dark shaded gold
+
+        // Render sorted faces
+        sortedFaces.forEach(item => {
+            const face = item.face;
+            
             ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
+            const firstPt = projected[face.indices[0]];
+            ctx.moveTo(firstPt.x, firstPt.y);
+            for (let k = 1; k < face.indices.length; k++) {
+                const pt = projected[face.indices[k]];
+                ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.closePath();
+
+            if (!isLightsout) {
+                // Normal Mode (Metallic Red and Gold Shaded)
+                if (face.type === 'red') {
+                    ctx.fillStyle = redGrad;
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)'; // Dark panel seams
+                    ctx.lineWidth = 1.0;
+                    ctx.stroke();
+                } else if (face.type === 'gold') {
+                    ctx.fillStyle = goldGrad;
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)'; // Dark panel seams
+                    ctx.lineWidth = 1.0;
+                    ctx.stroke();
+                } else if (face.type === 'eye') {
+                    ctx.save();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowBlur = 12 * scalePulse;
+                    ctx.shadowColor = 'rgba(255, 255, 255, 0.85)';
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            } else {
+                // Lightsout Mode (Futuristic Telemetry Hologram)
+                ctx.save();
+                ctx.lineWidth = 2.0;
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.35)';
+
+                if (face.type === 'red') {
+                    ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+                    ctx.fill();
+                    ctx.stroke();
+                } else if (face.type === 'gold') {
+                    ctx.fillStyle = 'rgba(30, 27, 20, 0.7)';
+                    ctx.fill();
+                    ctx.stroke();
+                } else if (face.type === 'eye') {
+                    ctx.fillStyle = 'rgba(255, 213, 0, 0.95)';
+                    ctx.shadowColor = 'rgba(255, 213, 0, 0.85)';
+                    ctx.shadowBlur = 18;
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(255, 213, 0, 0.95)';
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
         });
-        
-        ctx.restore();
-
-        // 3. RENDER GLOWING EYE SLIT POLYGONS
-        // Left Eye: 10 -> 11 -> 12 -> 13
-        ctx.beginPath();
-        ctx.moveTo(projected[10].x, projected[10].y);
-        ctx.lineTo(projected[11].x, projected[11].y);
-        ctx.lineTo(projected[12].x, projected[12].y);
-        ctx.lineTo(projected[13].x, projected[13].y);
-        ctx.closePath();
-        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.45)';
-        ctx.fill();
-
-        // Right Eye: 14 -> 15 -> 16 -> 17
-        ctx.beginPath();
-        ctx.moveTo(projected[14].x, projected[14].y);
-        ctx.lineTo(projected[15].x, projected[15].y);
-        ctx.lineTo(projected[16].x, projected[16].y);
-        ctx.lineTo(projected[17].x, projected[17].y);
-        ctx.closePath();
-        ctx.fillStyle = isLightsout ? 'rgba(255, 213, 0, 0.85)' : 'rgba(255, 255, 255, 0.45)';
-        ctx.fill();
 
         // Draw physics dust gravity particles
         if (physicsDustActive && dustPoints.length > 0) {
