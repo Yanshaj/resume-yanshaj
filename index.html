@@ -883,6 +883,75 @@
         font-size: 0.95rem;
       }
     }
+
+    /* ─── SCROLL PROGRESS & REVEALS ─── */
+    .scroll-progress-container {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      z-index: 99;
+      background: transparent;
+      pointer-events: none;
+    }
+    .scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.1s ease-out;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.revealed {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .reveal-slide-left {
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-slide-left.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-slide-right {
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-slide-right.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Stagger items state before reveal */
+    .stagger-container .stagger-item {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stagger-container .stagger-item.revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   </style>
 </head>
 <body class="dark">
@@ -905,6 +974,11 @@
     </button>
   </div>
 </nav>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress-container">
+  <div class="scroll-progress-bar" id="scroll-bar"></div>
+</div>
 
 <!-- ═══ PAGE ROUTER WRAPPER ═══ -->
 <main class="page-container">
@@ -936,29 +1010,29 @@
 
     <!-- ABOUT SECTION -->
     <section class="section" id="about-details">
-      <div class="section-label">01 / Who I Am</div>
-      <h2 class="section-title">The person<br><em>behind the lens.</em></h2>
+      <div class="section-label reveal">01 / Who I Am</div>
+      <h2 class="section-title reveal">The person<br><em>behind the lens.</em></h2>
       <div class="about-grid">
         <div>
-          <div class="polaroid">
+          <div class="polaroid reveal-slide-left">
             <div class="polaroid-img">🎬</div>
             <div class="polaroid-caption">Yanshaj, Landran 2024</div>
           </div>
         </div>
-        <div class="about-text">
+        <div class="about-text reveal-slide-right">
           <p>Hey, I'm <strong>Yanshaj</strong> — a CSE student at <strong>CGC Landran</strong> who lives at the intersection of technology and storytelling. I build things that work, and make things that <em>feel</em>.</p>
           <p>Whether it's cutting a cinematic reel, shipping a full-stack app, or crafting Hinglish copy that hits home — I bring the same energy to all of it. I'm a video editor for <span class="brand">Alithox Digital</span>, the Editor & Social Media Manager of the <strong>IEEE Student Branch at CGC</strong>, and a Google Student Ambassador.</p>
           <p>When I'm not at the edit desk, I'm probably chasing the retro-iPod lifestyle on Instagram or scripting the next episode of my YouTube channel <strong>"Vibe with Camera"</strong>.</p>
-          <div class="about-stats">
-            <div>
+          <div class="about-stats stagger-container">
+            <div class="stagger-item">
               <div class="stat-num">3+</div>
               <div class="stat-label">Years of<br>Video Editing</div>
             </div>
-            <div>
+            <div class="stagger-item">
               <div class="stat-num">49</div>
               <div class="stat-label">Teams Managed<br>(IEEE YESIST12)</div>
             </div>
-            <div>
+            <div class="stagger-item">
               <div class="stat-num">3rd</div>
               <div class="stat-label">Eureka! Pitching<br>Competition</div>
             </div>
@@ -972,10 +1046,10 @@
   <div id="skills" class="page-view">
     <!-- TOOLS & SKILLS -->
     <section class="section bg-white" id="skills-details">
-      <div class="section-label">02 / Tools & Skills</div>
-      <h2 class="section-title">Craft takes<br><em>the right tools.</em></h2>
-      <div class="skills-grid">
-        <div class="skill-card">
+      <div class="section-label reveal">02 / Tools & Skills</div>
+      <h2 class="section-title reveal">Craft takes<br><em>the right tools.</em></h2>
+      <div class="skills-grid stagger-container">
+        <div class="skill-card stagger-item">
           <span class="skill-icon">🎞️</span>
           <div class="skill-title">Adobe Ecosystem</div>
           <p class="skill-desc">Advanced post-production workflows — from rough cut to final export.</p>
@@ -984,7 +1058,7 @@
             <span class="tag">Audition</span><span class="tag">Photoshop</span>
           </div>
         </div>
-        <div class="skill-card">
+        <div class="skill-card stagger-item">
           <span class="skill-icon">🎨</span>
           <div class="skill-title">Blackmagic Design</div>
           <p class="skill-desc">Professional colour grading and visual effects compositing.</p>
@@ -992,7 +1066,7 @@
             <span class="tag">DaVinci Resolve</span><span class="tag">Fusion VFX</span>
           </div>
         </div>
-        <div class="skill-card">
+        <div class="skill-card stagger-item">
           <span class="skill-icon">📱</span>
           <div class="skill-title">Mobile & Quick Edit</div>
           <p class="skill-desc">Fast-turnaround content for Reels, Shorts, and social campaigns.</p>
@@ -1000,7 +1074,7 @@
             <span class="tag">CapCut</span><span class="tag">Filmora</span>
           </div>
         </div>
-        <div class="skill-card">
+        <div class="skill-card stagger-item">
           <span class="skill-icon">💻</span>
           <div class="skill-title">Web Development</div>
           <p class="skill-desc">Full-stack applications from concept to production deployment.</p>
@@ -1010,7 +1084,7 @@
             <span class="tag a">PostgreSQL</span>
           </div>
         </div>
-        <div class="skill-card">
+        <div class="skill-card stagger-item">
           <span class="skill-icon">⚙️</span>
           <div class="skill-title">Languages & Algorithms</div>
           <p class="skill-desc">Strong DSA fundamentals and systems-level programming.</p>
@@ -1019,7 +1093,7 @@
             <span class="tag a">Python</span><span class="tag a">DSA</span>
           </div>
         </div>
-        <div class="skill-card">
+        <div class="skill-card stagger-item">
           <span class="skill-icon">✍️</span>
           <div class="skill-title">Content & Strategy</div>
           <p class="skill-desc">Hinglish copywriting, digital marketing, and cross-platform content strategy.</p>
@@ -1033,20 +1107,20 @@
 
     <!-- CERTIFICATIONS -->
     <section class="section bg-sand" id="certs-details">
-      <div class="section-label">03 / Certifications</div>
-      <h2 class="section-title">Always<br><em>learning.</em></h2>
-      <div class="certs-grid">
-        <div class="cert-card">
+      <div class="section-label reveal">03 / Certifications</div>
+      <h2 class="section-title reveal">Always<br><em>learning.</em></h2>
+      <div class="certs-grid stagger-container">
+        <div class="cert-card stagger-item">
           <span class="cert-icon">🧱</span>
           <div class="cert-title">MERN Stack Development</div>
           <div class="cert-issuer">TCIL · Summer Course · Jun 2025</div>
         </div>
-        <div class="cert-card">
+        <div class="cert-card stagger-item">
           <span class="cert-icon">🧪</span>
           <div class="cert-title">Software Testing Certification</div>
           <div class="cert-issuer">NPTEL · IIT Kharagpur via SWAYAM</div>
         </div>
-        <div class="cert-card">
+        <div class="cert-card stagger-item">
           <span class="cert-icon">🤖</span>
           <div class="cert-title">Claude Code in Action</div>
           <div class="cert-issuer">Anthropic · Certified</div>
@@ -1056,20 +1130,20 @@
 
     <!-- EDUCATION -->
     <section class="section" id="education-details">
-      <div class="section-label">04 / Education</div>
-      <h2 class="section-title">Where the<br><em>foundation was built.</em></h2>
-      <div class="edu-grid">
-        <div class="edu-card">
+      <div class="section-label reveal">04 / Education</div>
+      <h2 class="section-title reveal">Where the<br><em>foundation was built.</em></h2>
+      <div class="edu-grid stagger-container">
+        <div class="edu-card stagger-item">
           <div class="edu-degree">B.Tech in Computer Science Engineering</div>
           <div class="edu-school">Chandigarh Group of Colleges, Landran</div>
           <div class="edu-meta">2023 – 2027 · Currently Pursuing</div>
         </div>
-        <div class="edu-card">
+        <div class="edu-card stagger-item">
           <div class="edu-degree">Intermediate (HBSE)</div>
           <div class="edu-school">Govt. Senior Secondary School, Alahar</div>
           <div class="edu-meta">2022 – 2023 · 73%</div>
         </div>
-        <div class="edu-card">
+        <div class="edu-card stagger-item">
           <div class="edu-degree">Matriculation (HBSE)</div>
           <div class="edu-school">Govt. Senior Secondary School, Alahar</div>
           <div class="edu-meta">2020 – 2021 · 100%</div>
@@ -1088,40 +1162,40 @@
 
     <!-- WORK & PROJECTS -->
     <section class="section bg-sand" id="work-details">
-      <div class="section-label">05 / Work & Projects</div>
-      <h2 class="section-title">Stories I've<br><em>helped tell.</em></h2>
-      <div class="timeline">
-        <div class="tl-item">
+      <div class="section-label reveal">05 / Work & Projects</div>
+      <h2 class="section-title reveal">Stories I've<br><em>helped tell.</em></h2>
+      <div class="timeline stagger-container">
+        <div class="tl-item stagger-item">
           <div class="tl-dot"></div>
           <div class="tl-title">IEEE YESIST12 — Global Innovation Competition</div>
           <div class="tl-role">Event Organizer & Media Lead · 2026 · CGC Landran</div>
           <p class="tl-desc">Led end-to-end social media strategy for CGC's flagship IEEE event covering 6 innovation tracks and 49 international teams. Produced promotional Reels and captions in Hinglish, designed judge evaluation systems in Excel, and managed all digital communications across the event lifecycle.</p>
         </div>
-        <div class="tl-item">
+        <div class="tl-item stagger-item">
           <div class="tl-dot"></div>
           <div class="tl-title">Alithox Digital</div>
           <div class="tl-role">Video Editor · Ongoing</div>
           <p class="tl-desc">Editing cinematic content and branded storytelling videos for the digital marketing brand. Delivered city-specific promotional reels for Chandigarh, logo animation videos, AI-driven creative campaigns, and social media content for clients.</p>
         </div>
-        <div class="tl-item">
+        <div class="tl-item stagger-item">
           <div class="tl-dot"></div>
           <div class="tl-title">SmartRoad Enterprise</div>
           <div class="tl-role">Full-Stack Developer · 6th Semester Project</div>
           <p class="tl-desc">Real-time road safety and pothole detection platform built with FastAPI, PostgreSQL, and YOLOv4. Integrated Twilio SMS alerts for incident reporting and deployed live on Render. Delivered a full 29-page academic report and CGC-template PowerPoint alongside the product.</p>
         </div>
-        <div class="tl-item">
+        <div class="tl-item stagger-item">
           <div class="tl-dot"></div>
           <div class="tl-title">RozgarLink AI — Cognizant Hackathon</div>
           <div class="tl-role">Developer · MERN + OpenAI Whisper + GPT-4o</div>
           <p class="tl-desc">AI-powered job-matching platform built under real hackathon pressure. Voice input via OpenAI Whisper, smart candidate matching via GPT-4o, and a full MERN stack. Competed in a fast-paced environment with cross-functional constraints.</p>
         </div>
-        <div class="tl-item">
+        <div class="tl-item stagger-item">
           <div class="tl-dot"></div>
           <div class="tl-title">Madimap</div>
           <div class="tl-role">Co-Creator · Doctor-Patient Connectivity Platform</div>
           <p class="tl-desc">A platform enabling seamless appointment booking and medical record management between doctors and patients. Featured in my portfolio at yanshaj-portfolio.onrender.com alongside SmartRoad Enterprise.</p>
         </div>
-        <div class="tl-item">
+        <div class="tl-item stagger-item">
           <div class="tl-dot"></div>
           <div class="tl-title">Vibe with Camera — YouTube Channel</div>
           <div class="tl-role">Content Creator & Solo Editor · Ongoing</div>
@@ -1132,31 +1206,31 @@
 
     <!-- RECOGNITION / ACHIEVEMENTS -->
     <section class="section" id="achievements-details">
-      <div class="section-label">06 / Recognition</div>
-      <h2 class="section-title">Moments that<br><em>mattered.</em></h2>
-      <div class="ach-grid">
-        <div class="ach-card">
+      <div class="section-label reveal">06 / Recognition</div>
+      <h2 class="section-title reveal">Moments that<br><em>mattered.</em></h2>
+      <div class="ach-grid stagger-container">
+        <div class="ach-card stagger-item">
           <span class="ach-icon">🏆</span>
           <div>
             <div class="ach-title">3rd Place — Eureka! Pitching Competition 2024</div>
             <div class="ach-desc">Competed in a high-stakes startup pitching event and placed in the top 3 with a tech-driven concept that resonated with the jury.</div>
           </div>
         </div>
-        <div class="ach-card">
+        <div class="ach-card stagger-item">
           <span class="ach-icon">🌐</span>
           <div>
             <div class="ach-title">Google Student Ambassador — CGC Landran</div>
             <div class="ach-desc">Promoted technology awareness across campus and built a community of students around Google's learning ecosystem.</div>
           </div>
         </div>
-        <div class="ach-card">
+        <div class="ach-card stagger-item">
           <span class="ach-icon">📡</span>
           <div>
             <div class="ach-title">Editor & Social Media Manager — IEEE Student Branch</div>
             <div class="ach-desc">Spearheaded digital strategy, content curation, and media production to boost campus engagement for CGC's IEEE branch.</div>
           </div>
         </div>
-        <div class="ach-card">
+        <div class="ach-card stagger-item">
           <span class="ach-icon">🎬</span>
           <div>
             <div class="ach-title">Content Creator & Media Lead — Vibe with Camera</div>
@@ -1171,7 +1245,7 @@
   <div id="contact" class="page-view">
     <!-- GET IN TOUCH -->
     <section class="section bg-ink" id="contact-details">
-      <div class="contact-inner">
+      <div class="contact-inner reveal-scale">
         <div class="section-label">07 / Get in Touch</div>
         <h2 class="section-title">Let's make<br><em>something great.</em></h2>
         <p class="contact-sub">Open to freelance, collaborations, content projects, and interesting conversations.</p>
@@ -1235,15 +1309,85 @@
   buildFilmTrack('filmTrack1');
   buildFilmTrack('filmTrack2');
 
-  /* ── SCROLL REVEAL ── */
+  /* ── SCROLL PROGRESS BAR ── */
+  window.addEventListener('scroll', () => {
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    const bar = document.getElementById('scroll-bar');
+    if (bar) bar.style.width = scrolled + "%";
+  });
+
+  /* ── SCROLL REVEAL IntersectionObserver ── */
   const revealObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.05 });
   document.querySelectorAll('.section').forEach(s => revealObs.observe(s));
+
+  /* ── PROGRESSIVE SCROLL REVEAL WITH STAGGER ── */
+  const progressiveRevealObs = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target.classList.contains('stagger-container')) {
+          const children = entry.target.querySelectorAll('.stagger-item');
+          children.forEach((child, index) => {
+            setTimeout(() => {
+              child.classList.add('revealed');
+            }, index * 80);
+          });
+        } else {
+          entry.target.classList.add('revealed');
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    threshold: 0.05,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  // Initial active page scroll reveal observation
+  function observeScrollElements() {
+    document.querySelectorAll('.reveal, .reveal-scale, .reveal-slide-left, .reveal-slide-right').forEach(el => {
+      progressiveRevealObs.observe(el);
+    });
+    document.querySelectorAll('.stagger-container').forEach(el => {
+      progressiveRevealObs.observe(el);
+    });
+  }
+  observeScrollElements();
 
   /* ── LIGHTWEIGHT CLIENT ROUTER ── */
   const pages = document.querySelectorAll('.page-view');
   const navLinks = document.querySelectorAll('.nav-links a, .nav-logo');
+
+
+
+  function resetScrollRevealForPage(page) {
+    // Reset section reveals
+    page.querySelectorAll('.section').forEach(s => {
+      s.classList.remove('visible');
+      revealObs.observe(s);
+    });
+
+    // Reset progressive reveals
+    page.querySelectorAll('.revealed').forEach(el => {
+      el.classList.remove('revealed');
+    });
+
+    // Re-observe target elements
+    page.querySelectorAll('.reveal, .reveal-scale, .reveal-slide-left, .reveal-slide-right').forEach(el => {
+      progressiveRevealObs.observe(el);
+    });
+    page.querySelectorAll('.stagger-container').forEach(el => {
+      progressiveRevealObs.observe(el);
+    });
+  }
 
   function navigate(route) {
     const targetPageId = route || 'about';
@@ -1270,6 +1414,9 @@
       setTimeout(() => {
         currentPage.classList.remove('active', 'fade-out');
         
+        // Reset scroll reveal animation states for the page
+        resetScrollRevealForPage(targetPage);
+        
         // Transition in target
         targetPage.classList.add('active');
         void targetPage.offsetWidth; // trigger reflow
@@ -1281,6 +1428,7 @@
     } else {
       // First load or same page click
       pages.forEach(p => p.classList.remove('active', 'show', 'fade-out'));
+      resetScrollRevealForPage(targetPage);
       targetPage.classList.add('active');
       void targetPage.offsetWidth;
       targetPage.classList.add('show');
